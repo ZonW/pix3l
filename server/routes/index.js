@@ -1,7 +1,7 @@
-const sweetRoutes = require('./sweet');
+const picRoutes = require('./pics');
 
 const constructorMethod = (app) => {
-  app.use('/sweets', sweetRoutes);
+  app.use('/pics', picRoutes);
   app.use('*', (req, res) => {
     res.sendStatus(404);
   });

@@ -1,6 +1,6 @@
 {
     "mongoConfig": {
       "serverUrl": "mongodb://localhost:27017/",
-      "database": "Wei-Zongshuo-CS554-Lab1"
+      "database": "Pix3lServer"
     }
   }
