@@ -18,65 +18,112 @@ const exportedMethods = {
         return password;
     },
 
-    checkName(name) {
-        if (typeof name !== 'string') throw 'password must be string';
-        name = name.trim();
-        if (name.length == 0) throw 'password is not a valid string';
-        return name;
+    checkEmail(email) {
+        if (typeof email !== 'string') throw 'email must be string';
+        email = email.trim();
+        if (email.length == 0) throw 'email is not a valid string';
+        return email;
     },
 
     async createUser(
-        name,
         username,
+        email,
         password
     ) {
-        if (!name) throw 'name must be provided';
-        if (!username) throw 'username must be provided';
-        if (!password) throw 'password must be provided';
-  
-        const saltRounds = 6;
-        name = this.checkName(name);
-        username = this.checkUsername(username);
-        password = this.checkPassword(password);
-        password = await bcryptjs.hash(password, saltRounds);
-        let newUser = {
-            name: name,
-            username: username,
-            password: password,
-        };
-        const usersCollection = await users();
-        const newInsertInformation = await usersCollection.insertOne(newUser);
-        if (newInsertInformation.insertedCount === 0) throw 'Insert failed!';
-        return { userInserted: true };
+        try{
+            if (!username) throw 'username must be provided';
+            if (!email) throw 'email must be provided';
+            if (!password) throw 'password must be provided';
+    
+            const saltRounds = 6;
+            email = this.checkName(email);
+            username = this.checkUsername(username);
+            password = this.checkPassword(password);
+            password = await bcryptjs.hash(password, saltRounds);
+            let newUser = {
+                email: email,
+                username: username,
+                password: password,
+                images:[]
+            };
+            const usersCollection = await users();
+            const newInsertInformation = await usersCollection.insertOne(newUser);
+            if (newInsertInformation.insertedCount === 0) throw 'Insert failed!';
+            return { userInserted: true };
+        } catch (e){
+            throw e
+        }
     },
 
     async getUserByName(username) {
-        const usersCollection = await users();
-        const username_lower = username.toLowerCase();
-        const userInfo = await usersCollection.findOne({ username: username_lower });
-        if (!userInfo) throw "user not found";
-        return userInfo;
+        try{
+            const usersCollection = await users();
+            const username_lower = username.toLowerCase();
+            const userInfo = await usersCollection.findOne({ username: username_lower });
+            if (!userInfo) throw "user not found";
+            return userInfo;
+        } catch (e){
+            throw e
+        }
     },
 
     async getUserById(userId) {
-        const usersCollection = await users();
-        if (!ObjectId.isValid(userId)) throw 'id is not a valid ObjectId';
-        const userInfo = await usersCollection.findOne({ _id: ObjectId(userId) });
-        if (!userInfo) throw "user not found";
-        return userInfo;
+        try {
+            const usersCollection = await users();
+            if (!ObjectId.isValid(userId)) throw 'id is not a valid ObjectId';
+            const userInfo = await usersCollection.findOne({ _id: ObjectId(userId) });
+            if (!userInfo) throw "user not found";
+            return userInfo;
+        } catch (e){
+            throw e
+        }
     },
 
     async checkUserLogin(username, password) {
-        if (!username) throw 'username must be provided';
-        if (!password) throw 'password must be provided';
-
-        const userInfo = await this.getUserByName(username);
-        if (!userInfo) throw 'user not found';
-        const pass = await bcryptjs.compare(password, userInfo.password);
-        if (!pass) throw 'password is invalid';
-        
-        return { authenticated: true };
+        try {
+            if (!username) throw 'username must be provided';
+            if (!password) throw 'password must be provided';
+            const userInfo = await this.getUserByName(username);
+            if (!userInfo) throw 'user not found';
+            const pass = await bcryptjs.compare(password, userInfo.password);
+            if (!pass) throw 'password is invalid';
+            return { authenticated: true };
+        } catch (e){
+            throw e
+        }
     },
+
+    async addImage(userId, imageUrl, style, text, time) {
+        try {
+            if (!userId) throw 'userId must be provided';
+            //////add throws
+            const usersCollection = await users();
+            if (!ObjectId.isValid(userId)) throw 'id is not a valid ObjectId';
+            let userInfo = await usersCollection.findOne({ _id: ObjectId(userId) });
+            if (!userInfo) throw "user not found";
+
+            let newImage = {
+                _id: ObjectId(),
+                url: imageUrl,
+                style: style,
+                text: text,
+                creationTime: time,
+                likes:0
+            };
+
+            userInfo.images.push(newImage);
+            sweetInfo.replies.push(replyAddInfo);
+
+            let updateInfo = {
+                images: userInfo.images
+            }
+            await usersCollection.updateOne({ _id: ObjectId(userId) }, { $set: updateInfo });
+            return { imageCreated: true };
+        } catch(e){
+            throw e
+        }
+    },
+
 };
 
 module.exports = exportedMethods;
