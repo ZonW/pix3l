@@ -16,7 +16,7 @@ ordersQueue.process(async function (job) {
         let resp = await deepai.callStandardApi(data.style, {
                 text: data.text,
         });
-        console.log(resp)
+        //console.log(resp)
         return resp;
     } catch(e){
         throw e;
@@ -134,7 +134,9 @@ const exportedMethods = {
 
     async generateImage(job) {
         try{
-            await ordersQueue.add(job);
+            const newJob = await ordersQueue.add(job);
+            const result = await newJob.finished();
+            return result
         } catch(e){
             throw e;
         }
