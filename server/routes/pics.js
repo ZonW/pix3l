@@ -7,7 +7,7 @@ router.get("/generate", async (req, res) => {
         let style = req.query.style;
         let text = req.query.text;
         let validStyles = ['future-architecture-generator', 'fantasy-world-generator', 'stable-diffusion'];
-        if (!validStyles.includes(text)) throw "Style not valid";
+        if (!validStyles.includes(style)) throw "Style not valid";
         let resp = await users.generateImage({"style": style, "text": text});
         res.send(resp);
     } catch(e) {

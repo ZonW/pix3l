@@ -9,19 +9,19 @@ const Queue = require('bull');
 const ordersQueue = new Queue("orders", {
     redis: process.env.REDIS_URL
 });
-ordersQueue.process(generate(data));
-
-async function generate(data) {
+ordersQueue.process(async function (job) {
+    const data = job.data;
     try{
         deepai.setApiKey('085f3f96-c9d3-4878-adcb-ca8a8bf279a2');
         let resp = await deepai.callStandardApi(data.style, {
                 text: data.text,
         });
+        console.log(resp)
         return resp;
     } catch(e){
         throw e;
     }
-}
+  });
 
 function checkUsername(username) {
     if (typeof username !== 'string') throw 'username must be string';
@@ -132,11 +132,9 @@ const exportedMethods = {
         }
     }, 
 
-    async generateImage(data) {
+    async generateImage(job) {
         try{
-            ordersQueue.add(data, {
-                /////
-            })
+            await ordersQueue.add(job);
         } catch(e){
             throw e;
         }
