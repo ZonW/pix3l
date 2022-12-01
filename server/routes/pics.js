@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const deepai = require('deepai'); 
+const users = require("../data/users");
 
 router.get("/generate", async (req, res) => {
     try{
@@ -13,6 +14,15 @@ router.get("/generate", async (req, res) => {
                 text: text,
         });
         res.send(resp);
+    } catch(e) {
+        return res.status(400).json({error: e});
+    }
+});
+
+router.get("/gallery", async (req, res) => {
+    try{
+       let allImages = await users.getAllImages();
+        res.send(allImages);
     } catch(e) {
         return res.status(400).json({error: e});
     }

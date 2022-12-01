@@ -93,6 +93,23 @@ const exportedMethods = {
         }
     },
 
+    async getAllImages(...args) {
+        try{
+            if (args.length != 0) throw('No argument is allowed')
+
+            const usersCollection = await users();
+            const userList = await usersCollection.find({}).toArray();
+            if (!userList) throw 'Could not get all users';
+            let allImages = [];
+            userList.forEach(element => {
+                allImages.push(element.images);
+            });
+            return allImages;
+        } catch(e){
+
+        }
+    }, 
+
     async addImage(userId, imageUrl, style, text, time) {
         try {
             if (!userId) throw 'userId must be provided';
@@ -107,8 +124,7 @@ const exportedMethods = {
                 url: imageUrl,
                 style: style,
                 text: text,
-                creationTime: time,
-                likes:0
+                likes: 0
             };
 
             userInfo.images.push(newImage);
