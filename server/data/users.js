@@ -2,29 +2,49 @@ const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const bcryptjs = require('bcryptjs');
 const ObjectId = require('mongodb').ObjectId;
+const deepai = require('deepai'); 
+
+//Redis Queue
+const Queue = require('bull');
+const ordersQueue = new Queue("orders", {
+    redis: process.env.REDIS_URL
+});
+ordersQueue.process(generate(data));
+
+async function generate(data) {
+    try{
+        deepai.setApiKey('085f3f96-c9d3-4878-adcb-ca8a8bf279a2');
+        let resp = await deepai.callStandardApi(data.style, {
+                text: data.text,
+        });
+        return resp;
+    } catch(e){
+        throw e;
+    }
+}
+
+function checkUsername(username) {
+    if (typeof username !== 'string') throw 'username must be string';
+    username = username.trim();
+    if (username.length == 0) throw 'username is not a valid string';
+    return username
+}
+
+function checkPassword(password) {
+    if (typeof password !== 'string') throw 'password must be string';
+    password = password.trim();
+    if (password.length == 0) throw 'password is not a valid string';
+    return password;
+}
+
+function checkEmail(email) {
+    if (typeof email !== 'string') throw 'email must be string';
+    email = email.trim();
+    if (email.length == 0) throw 'email is not a valid string';
+    return email;
+}
 
 const exportedMethods = {
-    checkUsername(username) {
-        if (typeof username !== 'string') throw 'username must be string';
-        username = username.trim();
-        if (username.length == 0) throw 'username is not a valid string';
-        return username
-    },
-
-    checkPassword(password) {
-        if (typeof password !== 'string') throw 'password must be string';
-        password = password.trim();
-        if (password.length == 0) throw 'password is not a valid string';
-        return password;
-    },
-
-    checkEmail(email) {
-        if (typeof email !== 'string') throw 'email must be string';
-        email = email.trim();
-        if (email.length == 0) throw 'email is not a valid string';
-        return email;
-    },
-
     async createUser(
         username,
         email,
@@ -36,9 +56,11 @@ const exportedMethods = {
             if (!password) throw 'password must be provided';
     
             const saltRounds = 6;
-            email = this.checkName(email);
-            username = this.checkUsername(username);
-            password = this.checkPassword(password);
+            email = checkName(email);
+            username = checkUsername(username);
+            password = checkPassword(password);
+            email = checkEmail(email);
+
             password = await bcryptjs.hash(password, saltRounds);
             let newUser = {
                 email: email,
@@ -110,7 +132,17 @@ const exportedMethods = {
         }
     }, 
 
-    async addImage(userId, imageUrl, style, text, time) {
+    async generateImage(data) {
+        try{
+            ordersQueue.add(data, {
+                /////
+            })
+        } catch(e){
+            throw e;
+        }
+    },
+
+    async addImage(userId, imageUrl, style, text) {
         try {
             if (!userId) throw 'userId must be provided';
             //////add throws
