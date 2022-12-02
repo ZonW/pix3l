@@ -3,6 +3,10 @@ const users = mongoCollections.users;
 const bcryptjs = require('bcryptjs');
 const ObjectId = require('mongodb').ObjectId;
 const deepai = require('deepai'); 
+const { v4: uuid } = require('uuid');
+const sharp = require('sharp');
+const axios = require("axios");
+const fs = require('fs')
 
 //Redis Queue
 const Queue = require('bull');
@@ -42,6 +46,19 @@ function checkEmail(email) {
     email = email.trim();
     if (email.length == 0) throw 'email is not a valid string';
     return email;
+}
+
+async function cropImage(url, left, top) {
+    let id = uuid();
+    const image = (await axios({ url: url, responseType: "arraybuffer" })).data;
+    sharp(image)
+        .extract({ left: left, top: top, width: 512, height: 512 })
+        .toFile('./public/image/temp/'+ id + '.jpg', function(err) {
+            if(err){
+                throw err;
+            }
+        });
+      return {'id': id, 'url':'localhost:3000/image/temp/' + id + '.jpg'};
 }
 
 const exportedMethods = {
@@ -134,26 +151,44 @@ const exportedMethods = {
 
     async generateImage(job) {
         try{
+            out = []
             const newJob = await ordersQueue.add(job);
             const result = await newJob.finished();
-            return result
+            if (result.id && result.output_url){
+                const nw = await cropImage(result.output_url, 0, 0);
+                const ne = await cropImage(result.output_url, 0, 512);
+                const se = await cropImage(result.output_url, 512, 0);
+                const sw = await cropImage(result.output_url, 512, 512);
+                out.push(nw);
+                out.push(ne);
+                out.push(se);
+                out.push(sw);
+            }
+            return out;
         } catch(e){
             throw e;
         }
     },
 
-    async addImage(userId, imageUrl, style, text) {
+    async addImage(userId, imageId, style, text) {
         try {
             if (!userId) throw 'userId must be provided';
-            //////add throws
+            if (!imageId) throw 'imageId must be provided';
+            if (!style) throw 'style must be provided';
+            if (!text) throw 'text must be provided';
+    
             const usersCollection = await users();
             if (!ObjectId.isValid(userId)) throw 'id is not a valid ObjectId';
             let userInfo = await usersCollection.findOne({ _id: ObjectId(userId) });
             if (!userInfo) throw "user not found";
 
+            fs.rename('./public/image/temp/' + imageId + '.jpg','./public/image/perm/' + imageId + '.jpg', function (err) {
+                if (err) throw err
+            });
+            let newUrl = 'localhost:3000/image/perm/' + imageId + '.jpg';
             let newImage = {
-                _id: ObjectId(),
-                url: imageUrl,
+                id: imageId,
+                url: newUrl,
                 style: style,
                 text: text,
                 likes: 0
@@ -166,9 +201,31 @@ const exportedMethods = {
                 images: userInfo.images
             }
             await usersCollection.updateOne({ _id: ObjectId(userId) }, { $set: updateInfo });
-            return { imageCreated: true };
+          
+            return { imageCreated: imageId };
         } catch(e){
             throw e
+        }
+    },
+
+    async deleteImage(imageId) {
+        try{
+            let url = './public/image/temp/' + imageId + '.jpg';
+            let flag = false
+            fs.unlink(url, function(err) {
+                if (err) console.log(err);
+                else{
+                    flag = true;
+                    //////sth wrong with callback but functional
+                }
+            });
+            if (flag){
+                return {'deleted' : imageId}
+            } else{
+                return {'error': 'Does not exist'}
+            }
+        } catch(e){
+            throw e;
         }
     },
 

@@ -24,5 +24,23 @@ router.get("/gallery", async (req, res) => {
     }
 });
 
+router.post("/addImage", async (req, res) => {
+    try{
+       const response = await users.addImage(req.body.userId, req.body.imageId, req.body.style, req.body.text);
+        res.send(response);
+    } catch(e) {
+        return res.status(400).json({error: e});
+    }
+});
+
+router.get("/deleteImage/:imageId", async (req, res) => {
+    try{
+        const response = await users.deleteImage(req.params.imageId);
+        res.send(response);
+    } catch(e) {
+        return res.status(400).json({error: e});
+    }
+});
+
 
 module.exports = router;
