@@ -42,5 +42,23 @@ router.get("/deleteImage/:imageId", async (req, res) => {
     }
 });
 
+router.get("/getUser/:firebaseId", async (req, res) => {
+    try{
+        const response = await users.getUserById(req.params.firebaseId);
+        res.send(response);
+    } catch(e) {
+        return res.status(400).json({error: e});
+    }
+});
+
+router.post("/newUser/:firebaseId", async (req, res) => {
+    try{
+        const response = await users.createUser(req.params.firebaseId);
+        res.send(response);
+    } catch(e) {
+        return res.status(400).json({error: e});
+    }
+});
+
 
 module.exports = router;

@@ -1,7 +1,7 @@
-const picRoutes = require('./pics');
+const picRoutes = require('./api');
 
 const constructorMethod = (app) => {
-  app.use('/pics', picRoutes);
+  app.use('/api', picRoutes);
   app.use('*', (req, res) => {
     res.sendStatus(404);
   });

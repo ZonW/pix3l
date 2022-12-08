@@ -1,6 +1,5 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
-const bcryptjs = require('bcryptjs');
 const ObjectId = require('mongodb').ObjectId;
 const deepai = require('deepai'); 
 const { v4: uuid } = require('uuid');
@@ -27,27 +26,6 @@ ordersQueue.process(async function (job) {
     }
   });
 
-function checkUsername(username) {
-    if (typeof username !== 'string') throw 'username must be string';
-    username = username.trim();
-    if (username.length == 0) throw 'username is not a valid string';
-    return username
-}
-
-function checkPassword(password) {
-    if (typeof password !== 'string') throw 'password must be string';
-    password = password.trim();
-    if (password.length == 0) throw 'password is not a valid string';
-    return password;
-}
-
-function checkEmail(email) {
-    if (typeof email !== 'string') throw 'email must be string';
-    email = email.trim();
-    if (email.length == 0) throw 'email is not a valid string';
-    return email;
-}
-
 async function cropImage(url, left, top) {
     let id = uuid();
     const image = (await axios({ url: url, responseType: "arraybuffer" })).data;
@@ -62,27 +40,12 @@ async function cropImage(url, left, top) {
 }
 
 const exportedMethods = {
-    async createUser(
-        username,
-        email,
-        password
-    ) {
+    async createUser(firebaseId) {
         try{
-            if (!username) throw 'username must be provided';
-            if (!email) throw 'email must be provided';
-            if (!password) throw 'password must be provided';
-    
-            const saltRounds = 6;
-            email = checkName(email);
-            username = checkUsername(username);
-            password = checkPassword(password);
-            email = checkEmail(email);
+            if (!firebaseId) throw 'Id must be provided';
 
-            password = await bcryptjs.hash(password, saltRounds);
             let newUser = {
-                email: email,
-                username: username,
-                password: password,
+                firebaseId: firebaseId,
                 images:[]
             };
             const usersCollection = await users();
@@ -94,39 +57,13 @@ const exportedMethods = {
         }
     },
 
-    async getUserByName(username) {
+    async getUserById(firebaseId) {
         try{
             const usersCollection = await users();
-            const username_lower = username.toLowerCase();
-            const userInfo = await usersCollection.findOne({ username: username_lower });
+            if (!firebaseId) throw 'Id must be provided';
+            const userInfo = await usersCollection.findOne({ firebaseId: firebaseId });
             if (!userInfo) throw "user not found";
             return userInfo;
-        } catch (e){
-            throw e
-        }
-    },
-
-    async getUserById(userId) {
-        try {
-            const usersCollection = await users();
-            if (!ObjectId.isValid(userId)) throw 'id is not a valid ObjectId';
-            const userInfo = await usersCollection.findOne({ _id: ObjectId(userId) });
-            if (!userInfo) throw "user not found";
-            return userInfo;
-        } catch (e){
-            throw e
-        }
-    },
-
-    async checkUserLogin(username, password) {
-        try {
-            if (!username) throw 'username must be provided';
-            if (!password) throw 'password must be provided';
-            const userInfo = await this.getUserByName(username);
-            if (!userInfo) throw 'user not found';
-            const pass = await bcryptjs.compare(password, userInfo.password);
-            if (!pass) throw 'password is invalid';
-            return { authenticated: true };
         } catch (e){
             throw e
         }
