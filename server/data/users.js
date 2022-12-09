@@ -49,6 +49,10 @@ const exportedMethods = {
                 images:[]
             };
             const usersCollection = await users();
+            const userInfo = await usersCollection.findOne({ firebaseId: firebaseId });
+            if (userInfo){
+                return { userInserted: 'exist' };
+            }
             const newInsertInformation = await usersCollection.insertOne(newUser);
             if (newInsertInformation.insertedCount === 0) throw 'Insert failed!';
             return { userInserted: true };
@@ -78,7 +82,9 @@ const exportedMethods = {
             if (!userList) throw 'Could not get all users';
             let allImages = [];
             userList.forEach(element => {
-                allImages.push(element.images);
+                element.images.forEach(image =>{
+                    allImages.push(image)
+                })
             });
             return allImages;
         } catch(e){
@@ -107,16 +113,15 @@ const exportedMethods = {
         }
     },
 
-    async addImage(userId, imageId, style, text) {
+    async addImage(firebaseId, imageId, style, text) {
         try {
-            if (!userId) throw 'userId must be provided';
+            if (!firebaseId) throw 'Id must be provided';
             if (!imageId) throw 'imageId must be provided';
             if (!style) throw 'style must be provided';
             if (!text) throw 'text must be provided';
     
             const usersCollection = await users();
-            if (!ObjectId.isValid(userId)) throw 'id is not a valid ObjectId';
-            let userInfo = await usersCollection.findOne({ _id: ObjectId(userId) });
+            const userInfo = await usersCollection.findOne({ firebaseId: firebaseId });
             if (!userInfo) throw "user not found";
 
             fs.rename('./public/image/temp/' + imageId + '.jpg','./public/image/perm/' + imageId + '.jpg', function (err) {
@@ -132,14 +137,13 @@ const exportedMethods = {
             };
 
             userInfo.images.push(newImage);
-            sweetInfo.replies.push(replyAddInfo);
 
             let updateInfo = {
                 images: userInfo.images
             }
-            await usersCollection.updateOne({ _id: ObjectId(userId) }, { $set: updateInfo });
+            await usersCollection.updateOne({ firebaseId: firebaseId }, { $set: updateInfo });
           
-            return { imageCreated: imageId };
+            return { 'imageAdded': imageId };
         } catch(e){
             throw e
         }
