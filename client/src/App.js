@@ -23,7 +23,7 @@ function App() {
         <div className='App'>
           <header className='App-header'>
             <h1 className='App-title'>
-              Welcome to the Pokemon Application
+              Welcome to the pix3l Application
             </h1>
 
             <br />
@@ -42,7 +42,7 @@ function App() {
 
             &nbsp;&nbsp;&nbsp;
             <Link className='showlink' to='/api/usePage/XXYYUUOO'>
-              TryPokemons
+              usePage
             </Link>
             &nbsp;&nbsp;&nbsp;
 {/* 
