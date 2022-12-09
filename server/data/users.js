@@ -129,7 +129,7 @@ const exportedMethods = {
                 style: style,
                 text: text,
                 likes: 0
-            };
+            }; 
 
             userInfo.images.push(newImage);
             sweetInfo.replies.push(replyAddInfo);

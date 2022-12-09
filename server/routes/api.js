@@ -24,6 +24,30 @@ router.get("/gallery", async (req, res) => {
     }
 });
 
+router.get("/userImage/:id", async (req, res) => {
+    try{
+        let resp = {
+            firebaseId: 'XXYYUUOO',
+            images:[
+                {id: "4a314884-2a7d-4ac3-9f23-b4d6eac1f333",
+                url: "/image/temp/4a314884-2a7d-4ac3-9f23-b4d6eac1f333.jpg",
+                style: "random stuff",
+                text: "random text",
+                likes: 0},
+                
+                {id: "1302991d-ac00-4cf6-b226-e1d99baa6ce5",
+                url: "/image/temp/1302991d-ac00-4cf6-b226-e1d99baa6ce5.jpg",
+                style: "random stuff",
+                text: "random text",
+                likes: 0},
+            ]
+        }
+        res.send(resp);
+    } catch(e) {
+        return res.status(400).json({error: e});
+    }
+});
+
 router.post("/addImage", async (req, res) => {
     try{
        const response = await users.addImage(req.body.userId, req.body.imageId, req.body.style, req.body.text);
