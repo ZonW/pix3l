@@ -9,13 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.2.0",
-    "bcryptjs": "^2.4.3",
-    "bull": "^4.10.2",
+    "axios": "^1.2.1",
+    "bull": "^3.23.0",
     "deepai": "^1.0.21",
     "express": "^4.18.2",
-    "express-session": "^1.17.3",
     "mongodb": "^4.12.1",
+    "redis": "^4.5.1",
+    "redis-url-parse": "^2.0.0",
     "sharp": "^0.31.2",
     "uuid": "^9.0.0"
   }

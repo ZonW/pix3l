@@ -1,14 +1,13 @@
 {
     "mongoConfig": {
       "localServerUrl": "mongodb://localhost:27017",
-      "remoteServerUrl": "mongodb+srv://admin:admin@cluster0.ujcltsr.mongodb.net/?retryWrites=true&w=majority",
       "database": "Pix3lServer"
     },
     "portConfig": {
       "localPort": 3000,
       "remotePort": 80,
       "localDomain": "localhost",
-      "remoteDomain": "pix3l.com"
+      "remoteDomain": "pix3l.art"
     }
 
   }

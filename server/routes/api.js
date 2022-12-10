@@ -33,9 +33,9 @@ router.post("/addImage", async (req, res) => {
     }
 });
 
-router.get("/deleteImage/:imageId", async (req, res) => {
+router.get("/deleteCache", async (req, res) => {
     try{
-        const response = await users.deleteImage(req.params.imageId);
+        const response = await users.deleteImage();
         res.send(response);
     } catch(e) {
         return res.status(400).json({error: e});
