@@ -1,0 +1,217 @@
+.App {
+	text-align: center;
+}
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+.App-logo {
+	height: 80px;
+}
+
+input {
+	border: 1px solid #cb1e1e;
+}
+
+.button1 {
+	background-color: #ffadad; /* Red */
+} 
+
+.button2 {
+	background-color: #94ff98; /* Green */
+}
+
+.show-body {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+.App-header {
+	background-color: #cb1e1e;
+	height: 200px;
+	padding: 20px;
+	color: #222;
+}
+
+.App-title {
+	font-size: 1.5em;
+	font-weight: bold;
+	color: white;
+}
+
+cite {
+	font-weight: bold;
+}
+table {
+	align-content: center;
+	margin: auto;
+}
+td {
+	padding: 10px;
+}
+
+.App-intro {
+	font-size: large;
+}
+.cap-first-letter:first-letter {
+	text-transform: capitalize;
+}
+.col-sm-6,
+col-md-4 {
+	border: 1px;
+}
+
+.hometext {
+	max-width: 60%;
+}
+.showlink {
+	padding: 0.4rem 0.8rem;
+	background-color: white;
+	border-radius: 3px;
+	color: #cb1e1e;
+	text-decoration: none !important;
+	margin: 5px;
+}
+
+.showlink:hover {
+	background-color: transparent;
+	color: rgb(253, 126, 126);
+	border: 2px solid white;
+}
+
+li {
+	padding: 20px;
+}
+
+p {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+div {
+	text-align: center;
+}
+
+a {
+	color: #cb1e1e;
+	text-decoration: none !important;
+}
+
+ul a:hover {
+	background-color: transparent;
+	color: blue;
+}
+
+ul {
+	list-style: none;
+}
+
+.title {
+	font-weight: bold;
+	color: #cb1e1e;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+	input {
+		font-size: 16px;
+	}
+}
+
+dt,
+dl {
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+dt {
+	display: inline-block;
+}
+
+dd {
+	display: inline;
+	margin-left: 5px;
+}
+
+.modalBackground {
+    z-index: 1;
+    top: 0;
+    opacity: 0.95;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(200, 200, 200);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContainer {
+    z-index: 99;
+    opacity: 1;
+    /* margin-top:100px; */
+    width: 600px;
+    height: 600px;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+  }
+  
+  .modalContainer .title {
+
+    display: inline-block;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .titleCloseBtn {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .titleCloseBtn button {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    cursor: pointer;
+  }
+  
+  .modalContainer .body {
+    flex: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    text-align: center;
+  }
+  
+  .modalContainer .footer {
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContainer .footer button {
+    width: 150px;
+    height: 45px;
+    margin: 10px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  #cancelBtn {
+    background-color: crimson;
+  }
