@@ -13,7 +13,6 @@ import PrivateRoute from './components/userlogin/PrivateRoute';
 import {AuthProvider} from './firebase/Auth';
 
 
-
 const App = () => {
   return (
     <AuthProvider>
@@ -24,7 +23,7 @@ const App = () => {
             <h1 className='App-title'>
               πx3l
             </h1>
-            <Link className='showlink' to='/'>
+            <Link className='showlink' to='/gallery/1'>
               Gallery
             </Link>
             <Link className='showlink' to='/portforlio'>
@@ -45,7 +44,7 @@ const App = () => {
           <br />
           <div className='App-body'>
             <Routes>
-              <Route path='/' element={<Gallery />}>
+              <Route path='/gallery/:pagenum' element={<Gallery />}>
 
               </Route>
               <Route path='/portforlio' element={<PrivateRoute />}>

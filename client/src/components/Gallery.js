@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
@@ -32,17 +33,6 @@ const useStyles = makeStyles({
         fontWeight: 'bold',
         fontSize: 12
     }
-    // modal: {
-    //     position: 'absolute',
-    //     top: '50%',
-    //     left: '50%',
-    //     transform: 'translate(-50%, -50%)',
-    //     width: 400,
-    //     bgcolor: 'background.paper',
-    //     border: '2px solid #000',
-    //     boxShadow: 24,
-    //     p: 4,
-    // }
 
 });
 
@@ -51,14 +41,19 @@ const useStyles = makeStyles({
 function Gallery() {
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
-    // const [searchData, setSearchData] = useState(undefined);
+    const [generateData, setGenerateData] = useState(undefined);
     const [pokeData, setpokeData] = useState(undefined);
-    // const [searchTerm, setSearchTerm] = useState('');
+    const [generateTerm, setGenerateTerm] = useState('');
+    const [ next, setNext ] = useState(true);
+    const [ previous, setPrevious ] = useState(true);
     // const [trainer, setTrainer] = useContext(TrainerContext);
     // const [showNext, setShowNext] = useState(true);
     // const [showPrevious, setShowPrevious] = useState(true);
     const [showNotFound, setShowNotFound] = useState(false);
-    // const { pagenum } = useParams();
+    const { pagenum } = useParams();
+
+    const firstPage = 1;
+    const lastPage = 10;
 
     let card = null;
 
@@ -74,24 +69,6 @@ function Gallery() {
     const [p, setP] = useState(undefined);
 
     useEffect(() => {
-        // async function fetchData() {
-        //     try {
-        //         setShowNotFound(false);
-        //         if (!/^\d+$/.test(pagenum)) {
-        //             setShowNotFound(true);
-        //             console.log('The pagenum format wrong');
-        //         } else {
-        //             const { data } = await axios.get(`/pokemon/page/${pagenum}`);
-        //             setpokeData(data);
-        //         }
-        //         setLoading(false);
-        //     } catch (e) {
-        //         setShowNotFound(true);
-        //         setLoading(false);
-        //         console.log(e);
-        //     }
-        // }
-
 
         async function fetchData() {
             try {
@@ -99,6 +76,16 @@ function Gallery() {
                 const { data} = await axios.get('//www.pix3l.art/api/gallery');
                 setpokeData(data);
                 setLoading(false);
+                if (Number(pagenum) === firstPage){
+                    setPrevious(false);
+					setNext(true);
+                } else if (Number(pagenum) === lastPage){
+                    setPrevious(true);
+					setNext(false);
+                } else {
+                    setPrevious(true);
+					setNext(true);
+                }
             } catch (e) {
                 setShowNotFound(true);
                 setLoading(false);
@@ -106,29 +93,10 @@ function Gallery() {
             }
         }
 
-        // async function checkPagination() {
-        //     try {
-        //         if (pagenum === '0') {
-        //             setShowPrevious(false);
-        //         } else {
-        //             setShowPrevious(true);
-        //         }
-
-        //         const { data } = await axios.get(`/pokemon/page/${Number(pagenum) + 1}`);
-        //         if (data.length >= 0) {
-        //             setShowNext(true);
-        //         } else {
-        //             setShowNext(false);
-        //         }
-        //     } catch (e) {
-        //         setShowNext(false);
-        //         console.log(e);
-        //     }
-        // }
 
         fetchData();
-        // checkPagination();
-    }, []);//[pagenum]
+
+    }, [pagenum]);
 
     // useEffect(() => {
     //     console.log('search useEffect fired');
@@ -192,19 +160,6 @@ function Gallery() {
         );
     };
 
-    // if (searchTerm) {
-    //     card =
-    //         searchData &&
-    //         searchData.map(pokemon => {
-    //             return buildCard(pokemon);
-    //         });
-    // } else {
-        // card =
-        //     pokeData &&
-        //     pokeData.map(pokemon => {
-        //         return buildCard(pokemon);
-        //     });
-    // }
 
     card =
     pokeData &&
@@ -222,24 +177,19 @@ function Gallery() {
     } else {
         return (
             <div>
-                {/* {!showNotFound && <Search searchValue={searchValue} />} */}
-                <br />
-                <br />
-                {/* {showPrevious && !showNotFound && !searchTerm && (
-                    <Link className='showlink' to={`/pokemon/page/${Number(pagenum) - 1}`}>
-                        Previous
-                    </Link>
-                )}
-                {showNext && !showNotFound && !searchTerm && (
-                    <Link className='showlink' to={`/pokemon/page/${Number(pagenum) + 1}`}>
-                        Next
-                    </Link>
-                )} */}
-                <br />
-                <br />
+                {/* {{ !showNotFound && <Search searchValue={searchValue} /> } */}
+
+
                 {showNotFound && <p>404 No Image Found</p>}
 
+                {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
+                {" "} 
+                {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                {" "}
+                {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
 
+                <br />
+                <br />
                 {modalOpen && <Modal props={[setModalOpen, p]} />}
                 <Grid container className={classes.grid} spacing={5}>
                     {card}
