@@ -30,7 +30,7 @@ function SignUp() {
   };
 
   if (currentUser) {
-    return <Navigate to='/' />;
+    return <Navigate to='/gallery/1' />;
   }
 
   return (

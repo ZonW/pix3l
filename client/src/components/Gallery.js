@@ -105,31 +105,29 @@ function Gallery() {
 
     }, [pagenum]);
 
-    // useEffect(() => {
-    //     console.log('search useEffect fired');
-    //     async function fetchData() {
-    //         try {
-    //             setShowNotFound(false);
-    //             console.log(`in fetch searchTerm: ${searchTerm}`);
-    //             const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
-    //             setSearchData([data]);
-    //             setLoading(false);
-    //         } catch (e) {
-    //             setShowNotFound(true);
-    //             console.log(e);
-    //         }
-    //     }
-    //     if (searchTerm) {
-    //         console.log('searchTerm is set');
-    //         fetchData();
-    //     }
-    // }, [searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        console.log('generateTerm useEffect fired');
+        console.log(`in fetch searchTerm: ${generateTerm}`);
+        async function fetchData() {
+            try {
+                //setShowNotFound(false);
+                console.log(`in fetch searchTerm: ${generateTerm}`);
+                //const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
+                //setSearchData([data]);
+                //setLoading(false);
+            } catch (e) {
+                //setShowNotFound(true);
+                console.log(e);
+            }
+        }
+        if (generateTerm) {
+            console.log('generateTerm is set');
+            fetchData();
+        }
+    }, [generateTerm]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // const searchValue = async value => {
-    //     setSearchTerm(value);
-    // };
 
-    const searchValue = async (value) => {
+    const generateValue = async (value) => {
         setGenerateTerm(value);
       };
 
@@ -180,7 +178,7 @@ function Gallery() {
 
 
     if (loading) {
-        
+
 		return (
 			<div>
 				<h2>Loading....</h2>
@@ -202,7 +200,7 @@ function Gallery() {
 		} else {
             return (
                 <div>
-                    <Generate searchValue={searchValue} />
+                    <Generate generateValue={generateValue} />
                     <br />
 
                     {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}

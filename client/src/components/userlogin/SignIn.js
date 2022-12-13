@@ -35,7 +35,8 @@ function SignIn() {
     }
   };
   if (currentUser) {
-    return <Navigate to='/' />;
+    return <Navigate to='/gallery/1' />;
+  } else {
   }
   return (
     <div>

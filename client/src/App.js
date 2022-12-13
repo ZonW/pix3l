@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import logo from './img/logo.jpg';
 import './App.css';
 import Gallery from './components/Gallery.js';
@@ -11,9 +11,14 @@ import SignIn from './components/userlogin/SignIn';
 import PrivateRoute from './components/userlogin/PrivateRoute';
 
 import {AuthProvider} from './firebase/Auth';
+import {AuthContext} from './firebase/Auth';
+
 
 
 const App = () => {
+  // const {currentUser} = React.useContext(AuthContext);
+  // console.log(AuthContext);
+  // console.log(React.useContext(AuthContext));
   return (
     <AuthProvider>
       <Router>
@@ -35,9 +40,10 @@ const App = () => {
             <Link className='showlink' to='/signup'>
               signup
             </Link>
-            <Link className='showlink' to='/logout'>
+            {console.log(useContext(AuthContext))}
+            {!useContext(AuthContext) && <Link className='showlink' to='/logout'>
               logout
-            </Link>
+            </Link>}
             
           </header>
           <br />
