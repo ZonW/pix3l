@@ -41,18 +41,16 @@ const useStyles = makeStyles({
 
 function Gallery() {
     const classes = useStyles();
-    const [loading, setLoading] = useState(true);
-    const [generateData, setGenerateData] = useState(undefined);
-    const [pokeData, setpokeData] = useState(undefined);
-    const [generateTerm, setGenerateTerm] = useState('');
+    const [ loading, setLoading] = useState(true);
+    const [ generateData, setGenerateData] = useState(undefined);
+    const [ pokeData, setpokeData] = useState(undefined);
+    const [ generateTerm, setGenerateTerm] = useState('');
     const [ next, setNext ] = useState(true);
     const [ previous, setPrevious ] = useState(true);
     const [ outOfPage, setOutOfPage ] = useState(false);
     const [ badRequest, setBadRequest ] = useState(false);
-    // const [trainer, setTrainer] = useContext(TrainerContext);
-    // const [showNext, setShowNext] = useState(true);
-    // const [showPrevious, setShowPrevious] = useState(true);
-    const [showNotFound, setShowNotFound] = useState(false);
+    const [ generated, setGenerated] = useState(false);
+    const [ showNotFound, setShowNotFound] = useState(false);
     const { pagenum } = useParams();
 
     const firstPage = 1;
@@ -108,12 +106,14 @@ function Gallery() {
     useEffect(() => {
         console.log('generateTerm useEffect fired');
         console.log(`in fetch searchTerm: ${generateTerm}`);
+
         async function fetchData() {
             try {
                 //setShowNotFound(false);
                 console.log(`in fetch searchTerm: ${generateTerm}`);
                 //const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
                 //setSearchData([data]);
+                setGenerated(true);
                 //setLoading(false);
             } catch (e) {
                 //setShowNotFound(true);
@@ -198,25 +198,63 @@ function Gallery() {
 				</div>
 			);
 		} else {
-            return (
-                <div>
-                    <Generate generateValue={generateValue} />
-                    <br />
-
-                    {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
-                    {" "} 
-                    {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
-                    {" "}
-                    {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
+            if (!generateTerm) {
+                return (
+                    <div>
+                        <Generate generateValue={generateValue} />
+                        <br />
     
-                    <br />
-                    <br />
-                    {modalOpen && <Modal props={[setModalOpen, p]} />}
-                    <Grid container className={classes.grid} spacing={5}>
-                        {card}
-                    </Grid>
-                </div>
-            );
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
+                        {" "} 
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                        {" "}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
+        
+                        <br />
+                        <br />
+                        {modalOpen && <Modal props={[setModalOpen, p]} />}
+                        <Grid container className={classes.grid} spacing={5}>
+                            {card}
+                        </Grid>
+                    </div>
+                );
+
+            } else {
+                return (
+                    <div>
+                        {generated  && <h2>Generating ...</h2>}
+                        {generated  && <h2>Generated !!!</h2>}
+                        {generated  && <div className="body">
+                            <Card className={classes.card} variant='outlined' >
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        component='img'
+                                        image={'https://pix3lserver.s3.amazonaws.com/s3%3A//pix3lserver/public/image/temp/79df8145-60d0-4f64-ac3b-78dcae29fc2f.jpg'}
+                                        title='AI image'
+                                    />
+            
+                                </CardActionArea>
+                            </Card>
+                        </div>}
+                        <br />
+    
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
+                        {" "} 
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                        {" "}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
+        
+                        <br />
+                        <br />
+                        {modalOpen && <Modal props={[setModalOpen, p]} />}
+                        <Grid container className={classes.grid} spacing={5}>
+                            {card}
+                        </Grid>
+                    </div>
+                );
+            }
+            
         }
     }
 }
