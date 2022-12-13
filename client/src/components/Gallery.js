@@ -204,11 +204,11 @@ function Gallery() {
                         <Generate generateValue={generateValue} />
                         <br />
     
-                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
                         {" "} 
                         {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
                         {" "}
-                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'>'} </Link>}
         
                         <br />
                         <br />
@@ -239,11 +239,11 @@ function Gallery() {
                         </div>}
                         <br />
     
-                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
                         {" "} 
                         {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
                         {" "}
-                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {">"} </Link>}
         
                         <br />
                         <br />
