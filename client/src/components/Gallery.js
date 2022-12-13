@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
+import Generate from './Generate';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -128,6 +129,10 @@ function Gallery() {
     //     setSearchTerm(value);
     // };
 
+    const searchValue = async (value) => {
+        setGenerateTerm(value);
+      };
+
     const buildCard = img => {
         return (
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={img.id}>
@@ -175,7 +180,7 @@ function Gallery() {
 
 
     if (loading) {
-
+        
 		return (
 			<div>
 				<h2>Loading....</h2>
@@ -197,8 +202,8 @@ function Gallery() {
 		} else {
             return (
                 <div>
-                    {/* {{ !showNotFound && <Search searchValue={searchValue} /> } */}
-    
+                    <Generate searchValue={searchValue} />
+                    <br />
 
                     {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
                     {" "} 
