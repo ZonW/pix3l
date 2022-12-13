@@ -46,6 +46,8 @@ function Gallery() {
     const [generateTerm, setGenerateTerm] = useState('');
     const [ next, setNext ] = useState(true);
     const [ previous, setPrevious ] = useState(true);
+    const [ outOfPage, setOutOfPage ] = useState(false);
+    const [ badRequest, setBadRequest ] = useState(false);
     // const [trainer, setTrainer] = useContext(TrainerContext);
     // const [showNext, setShowNext] = useState(true);
     // const [showPrevious, setShowPrevious] = useState(true);
@@ -82,6 +84,10 @@ function Gallery() {
                 } else if (Number(pagenum) === lastPage){
                     setPrevious(true);
 					setNext(false);
+                } else if (Number(pagenum) > lastPage){
+                    setOutOfPage(true);
+                } else if (Number(pagenum) < firstPage){
+                    setBadRequest(true);
                 } else {
                     setPrevious(true);
 					setNext(true);
@@ -169,33 +175,46 @@ function Gallery() {
 
 
     if (loading) {
-        return (
-            <div>
-                <h2>Loading...</h2>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                {/* {{ !showNotFound && <Search searchValue={searchValue} /> } */}
 
+		return (
+			<div>
+				<h2>Loading....</h2>
+			</div>
+		);
+	} else {
+        if (outOfPage) {
+			return (
+				<div>
+					<h2>404 : NO More Image Found</h2>
+				</div>
+			);
+		} else if (badRequest) {
+			return (
+				<div>
+					<h2>400 : Bad Request</h2>
+				</div>
+			);
+		} else {
+            return (
+                <div>
+                    {/* {{ !showNotFound && <Search searchValue={searchValue} /> } */}
+    
 
-                {showNotFound && <p>404 No Image Found</p>}
-
-                {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
-                {" "} 
-                {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
-                {" "}
-                {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
-
-                <br />
-                <br />
-                {modalOpen && <Modal props={[setModalOpen, p]} />}
-                <Grid container className={classes.grid} spacing={5}>
-                    {card}
-                </Grid>
-            </div>
-        );
+                    {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> previous </Link>}
+                    {" "} 
+                    {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                    {" "}
+                    {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> next </Link>}
+    
+                    <br />
+                    <br />
+                    {modalOpen && <Modal props={[setModalOpen, p]} />}
+                    <Grid container className={classes.grid} spacing={5}>
+                        {card}
+                    </Grid>
+                </div>
+            );
+        }
     }
 }
 
