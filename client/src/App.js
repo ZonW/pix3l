@@ -50,7 +50,10 @@ const App = () => {
           <br />
           <div className='App-body'>
             <Routes>
+              <Route path='/' element={<Gallery />}>
+              </Route>
               <Route path='/gallery/:pagenum' element={<Gallery />}>
+              
 
               </Route>
               <Route path='/portforlio' element={<PrivateRoute />}>

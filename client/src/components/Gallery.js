@@ -4,6 +4,7 @@ import axios from 'axios';
 import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
 import Generate from './Generate';
+import {Navigate} from 'react-router-dom';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -58,6 +59,8 @@ function Gallery() {
 
     let card = null;
 
+
+
     // let disPatch = useDispatch();
     // const CatchPokemon = pokemon => {
     //     disPatch(actions.catchThePokemon(trainer.id, pokemon.id, setTrainer));
@@ -72,6 +75,7 @@ function Gallery() {
     useEffect(() => {
 
         async function fetchData() {
+
             try {
                 setShowNotFound(false);
                 const { data} = await axios.get('//www.pix3l.art/api/gallery');
@@ -176,6 +180,9 @@ function Gallery() {
         return buildCard(img);
     });
 
+    if (pagenum === undefined){
+        return <Navigate to='/gallery/1' />;
+    }
 
     if (loading) {
 
@@ -185,6 +192,7 @@ function Gallery() {
 			</div>
 		);
 	} else {
+
         if (outOfPage) {
 			return (
 				<div>
