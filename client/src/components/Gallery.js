@@ -58,7 +58,7 @@ function Gallery() {
     const { pagenum } = useParams();
 
     const firstPage = 1;
-    const lastPage = 10;
+    const lastPage = 6;
 
     let card = null;
 
@@ -109,12 +109,12 @@ function Gallery() {
 
     useEffect(() => {
         console.log('generateTerm useEffect fired');
-        console.log(`in fetch searchTerm: ${generateTerm}`);
+        console.log(`in fetch generateTerm: ${generateTerm}`);
 
         async function fetchData() {
             try {
-                //setShowNotFound(false);
-                console.log(`in fetch searchTerm: ${generateTerm}`);
+
+                console.log(`in fetch generateTerm: ${generateTerm}`);
                 console.log(`style: ${style}`);
                 if (generateTerm && style){
                     const url = "http://www.pix3l.art/api/generate?style=" + style + "&text=" + generateTerm;
@@ -122,12 +122,12 @@ function Gallery() {
                     console.log(data);
                     setGenerateData(data);
                     setGenerated(true);
-                    console.log(`in fetch searchTerm: ${generateTerm}`);
+                    console.log(`in fetch generateTerm: ${generateTerm}`);
                     console.log(`style: ${style}`);
                 }
-                //setLoading(false);
+
             } catch (e) {
-                //setShowNotFound(true);
+
                 console.log(e);
             }
         }

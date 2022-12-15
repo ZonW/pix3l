@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { Button } from '@material-ui/core';
+import { Button , TextField} from '@material-ui/core';
 import {Navigate} from 'react-router-dom';
 import {useState} from 'react';
 import {AuthContext} from '../firebase/Auth';
@@ -74,9 +74,11 @@ const Generate = (props) => {
 				<span>Keywords you want to generate: </span>
                 <br/>
                 <br/>
-				<input autoComplete='off' type='text' name='generateTerm' onChange={(e) =>saveChange(e)} />
+				<TextField id="filled-basic" label="Filled" variant="filled" name='generateTerm' onChange={(e) =>saveChange(e)}/>
+				{/* <input autoComplete='off' type='text' name='generateTerm' onChange={(e) =>saveChange(e)} />
+                <br/> */}
                 <br/>
-                <br/>
+				<br/>
 				{style === 'fantasy-world-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeOne} > fantasy-world  </Button>} 
 				{style && style !== 'fantasy-world-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeOne} > fantasy-world  </Button>}
 				{" "}
