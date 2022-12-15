@@ -48,30 +48,27 @@ function FindUserAllImg() {
     const [modalOpen, setModalOpen] = useState(false);
     const [p, setP] = useState(undefined);
     const [flag, setfalg] = useState(false);
-    
 
     // const {currentUser} = React.useContext(AuthContext);
     // const uid = currentUser.uid;
-    const [uid, setUid] = useState(undefined)
 
 
-    async function deleteHanld(id) {
-        try {
-            console.log("I am in deletehanld");
-            console.log(`${id}`);
-            const{data} = await axios.post('//www.pix3l.art/api/deleteImage', {
-                userId : uid,
-                imageId: id
-            })
-            if(data.length != 0){
-                setfalg(!flag);
-            }else{
-                console.log("check whether delete the img ")
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // async function deleteHanld(id) {
+    //     try {
+    //         console.log("I am in deletehanld");
+    //         console.log(`${id}`);
+    //         const{data} = await axios.post(`//www.pix3l.art/api/deleteCache/${id}`, {
+    //             id : id
+    //         })
+    //         if(data.length != 0){
+    //             setfalg(!flag);
+    //         }else{
+    //             console.log("check whether delete the img ")
+    //         }
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
 
     useEffect(() => {
@@ -81,8 +78,7 @@ function FindUserAllImg() {
                 setShowNotFound(false);
                 // const { data} = await axios.get('/api/userImage/XXYYUUOO');
                 // const { data } = await axios.get('/api/userImage/XXYYUUOO');
-                const { data } = await axios.get('//www.pix3l.art/api/getUser/11111');
-                setUid('11111')
+                const { data } = await axios.get('//www.pix3l.art/api/getUser/22222');
                 // http://www.pix3l.art/api/getUser/qwerqwer
                 console.log(data);
                 let images = data.images
@@ -152,8 +148,8 @@ function FindUserAllImg() {
                     <Button className='openModalBtn'
                         onClick={() => { setModalOpen(true); setP(img) }}> Show detail</Button>
 
-                    <Button className='deleteImg'
-                        onClick={() => { deleteHanld(img.id) }}> delete</Button>
+                    {/* <Button className='deleteImg'
+                        onClick={() => { deleteHanld(img.id) }}> delete</Button> */}
 
                 </Card>
             </Grid>

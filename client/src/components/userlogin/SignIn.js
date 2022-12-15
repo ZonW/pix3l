@@ -8,8 +8,7 @@ import {
 } from '../../firebase/FirebaseFunctions';
 
 function SignIn() {
-  console.log(AuthContext)
-  console.log(useContext(AuthContext))
+
   const {currentUser} = useContext(AuthContext);
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -34,51 +33,54 @@ function SignIn() {
       );
     }
   };
+
   if (currentUser) {
     return <Navigate to='/gallery/1' />;
   } else {
+    return (
+      
+      <div>
+        <h1>Log in</h1>
+        <form onSubmit={handleLogin}>
+          <div className='form-group'>
+            <label>
+              Email:
+              <input
+                className='form-control'
+                name='email'
+                id='email'
+                type='email'
+                placeholder='Email'
+                required
+              />
+            </label>
+          </div>
+          <div className='form-group'>
+            <label>
+              Password:
+              <input
+                className='form-control'
+                name='password'
+                type='password'
+                placeholder='Password'
+                autoComplete='off'
+                required
+              />
+            </label>
+          </div>
+          <button type='submit'>Log in</button>
+  
+          <button className='forgotPassword' onClick={passwordReset}>
+            Forgot Password
+          </button>
+        </form>
+  
+        <br />
+        <SocialSignIn />
+      </div>
+    );
   }
-  return (
-    <div>
-      <h1>Log in</h1>
-      <form onSubmit={handleLogin}>
-        <div className='form-group'>
-          <label>
-            Email:
-            <input
-              className='form-control'
-              name='email'
-              id='email'
-              type='email'
-              placeholder='Email'
-              required
-            />
-          </label>
-        </div>
-        <div className='form-group'>
-          <label>
-            Password:
-            <input
-              className='form-control'
-              name='password'
-              type='password'
-              placeholder='Password'
-              autoComplete='off'
-              required
-            />
-          </label>
-        </div>
-        <button type='submit'>Log in</button>
-
-        <button className='forgotPassword' onClick={passwordReset}>
-          Forgot Password
-        </button>
-      </form>
-
-      <br />
-      <SocialSignIn />
-    </div>
-  );
+  
 }
 
 export default SignIn;

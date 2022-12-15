@@ -7,6 +7,8 @@ import Generate from './Generate';
 import {Navigate} from 'react-router-dom';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
 
+import {AuthContext} from '../firebase/Auth';
+
 const useStyles = makeStyles({
     card: {
         zIndex: 1,
@@ -43,9 +45,10 @@ const useStyles = makeStyles({
 function Gallery() {
     const classes = useStyles();
     const [ loading, setLoading] = useState(true);
-    const [ generateData, setGenerateData] = useState(undefined);
+    const [ generateData, setGenerateData] = useState(null);
     const [ pokeData, setpokeData] = useState(undefined);
     const [ generateTerm, setGenerateTerm] = useState('');
+    const [ style, setStyle] = useState('');
     const [ next, setNext ] = useState(true);
     const [ previous, setPrevious ] = useState(true);
     const [ outOfPage, setOutOfPage ] = useState(false);
@@ -55,19 +58,12 @@ function Gallery() {
     const { pagenum } = useParams();
 
     const firstPage = 1;
-    const lastPage = 10;
+    const lastPage = 6;
 
     let card = null;
 
+    const {currentUser} = useContext(AuthContext);
 
-
-    // let disPatch = useDispatch();
-    // const CatchPokemon = pokemon => {
-    //     disPatch(actions.catchThePokemon(trainer.id, pokemon.id, setTrainer));
-    // };
-    // const ReleasePokemon = pokemon => {
-    //     disPatch(actions.releaseThePokemon(trainer.id, pokemon.id, setTrainer));
-    // };
 
     const [modalOpen, setModalOpen] = useState(false);
     const [p, setP] = useState(undefined);
@@ -78,6 +74,10 @@ function Gallery() {
 
             try {
                 setShowNotFound(false);
+                if (currentUser) {
+                    console.log(currentUser.uid);
+                    await axios.post('//www.pix3l.art/api/newUser/' + currentUser.uid);
+                }
                 const { data} = await axios.get('//www.pix3l.art/api/gallery');
                 setpokeData(data);
                 setLoading(false);
@@ -109,18 +109,25 @@ function Gallery() {
 
     useEffect(() => {
         console.log('generateTerm useEffect fired');
-        console.log(`in fetch searchTerm: ${generateTerm}`);
+        console.log(`in fetch generateTerm: ${generateTerm}`);
 
         async function fetchData() {
             try {
-                //setShowNotFound(false);
-                console.log(`in fetch searchTerm: ${generateTerm}`);
-                //const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
-                //setSearchData([data]);
-                setGenerated(true);
-                //setLoading(false);
+
+                console.log(`in fetch generateTerm: ${generateTerm}`);
+                console.log(`style: ${style}`);
+                if (generateTerm && style){
+                    const url = "http://www.pix3l.art/api/generate?style=" + style + "&text=" + generateTerm;
+                    const {data} = await axios.get(url);
+                    console.log(data);
+                    setGenerateData(data);
+                    setGenerated(true);
+                    console.log(`in fetch generateTerm: ${generateTerm}`);
+                    console.log(`style: ${style}`);
+                }
+
             } catch (e) {
-                //setShowNotFound(true);
+
                 console.log(e);
             }
         }
@@ -132,7 +139,8 @@ function Gallery() {
 
 
     const generateValue = async (value) => {
-        setGenerateTerm(value);
+        setGenerateTerm(value.text);
+        setStyle(value.style);
       };
 
     const buildCard = img => {
@@ -140,7 +148,6 @@ function Gallery() {
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={img.id}>
                 <Card className={classes.card} variant='outlined' >
                     <CardActionArea>
-                        {/* <Link to={`/pokemon/${pokemon.id}`}> */}
                             <CardMedia
                                 className={classes.media}
                                 component='img'
@@ -156,13 +163,13 @@ function Gallery() {
                                     component='h2'
                                     color='textSecondary'
                                 >
-                                    {/* {pokemon.species.name} */}
+        
                                     style:{img.style}
                                     text:{img.text}
                                     likes:{img.likes}
                                 </Typography>
                             </CardContent>
-                        {/* </Link> */}
+                   
                     </CardActionArea>
 
                     <Button className='openModalBtn'
@@ -230,22 +237,79 @@ function Gallery() {
             } else {
                 return (
                     <div>
-                        {generated  && <h2>Generating ...</h2>}
+                        {!generated  && <h2>Generating ...</h2>}
+                        {!generated  && <h4>It may take a while...</h4>}
                         {generated  && <h2>Generated !!!</h2>}
-                        {generated  && <div className="body">
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                        {generated  && 
+                        <Grid container spacing={3} >
                             <Card className={classes.card} variant='outlined' >
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.media}
                                         component='img'
-                                        image={'https://pix3lserver.s3.amazonaws.com/s3%3A//pix3lserver/public/image/temp/79df8145-60d0-4f64-ac3b-78dcae29fc2f.jpg'}
+                                        image={generateData[0].url}
                                         title='AI image'
                                     />
             
                                 </CardActionArea>
+                                <Button variant="contained"  >Add</Button>
                             </Card>
-                        </div>}
+                            <Card className={classes.card} variant='outlined' >
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        component='img'
+                                        image={generateData[1].url}
+                                        title='AI image'
+                                    />
+            
+                                </CardActionArea>
+                                <Button variant="contained"  >Add</Button>
+                            </Card>
+                            
+                            <Card className={classes.card} variant='outlined' >
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        component='img'
+                                        image={generateData[2].url}
+                                        title='AI image'
+                                    />
+            
+                                </CardActionArea>
+                                <Button variant="contained"  >Add</Button>
+                            </Card>
+                            <Card className={classes.card} variant='outlined' >
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        component='img'
+                                        image={generateData[3].url}
+                                        title='AI image'
+                                    />
+            
+                                </CardActionArea>
+                                <Button variant="contained"  >Add</Button>
+                            </Card>
+                        </Grid>
+                        }
                         <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <Generate generateValue={generateValue} />
+                        <br />
+                        <br />
+                        <br />
+
     
                         {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
                         {" "} 
