@@ -55,6 +55,10 @@ function Gallery() {
     const [ badRequest, setBadRequest ] = useState(false);
     const [ generated, setGenerated] = useState(false);
     const [ showNotFound, setShowNotFound] = useState(false);
+    const [ added1, setAdded1] = useState(false);
+    const [ added2, setAdded2] = useState(false);
+    const [ added3, setAdded3] = useState(false);
+    const [ added4, setAdded4] = useState(false);
     const { pagenum } = useParams();
 
     const firstPage = 1;
@@ -142,6 +146,82 @@ function Gallery() {
         setGenerateTerm(value.text);
         setStyle(value.style);
       };
+
+    const addImg1 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[0].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+              setAdded1(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+
+    const addImg2 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[1].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+            setAdded2(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+
+    const addImg3 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[2].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+              setAdded3(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+    
+    const addImg4 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[3].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+              setAdded4(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
 
     const buildCard = img => {
         return (
@@ -267,7 +347,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added1 && <Button variant="contained" onClick={addImg1}>Add</Button>}
+                                {added1 && <Button variant="contained" >Added</Button>}
                             </Card>
                             <Card className={classes.card} variant='outlined' >
                                 <CardActionArea>
@@ -279,7 +360,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added2 && <Button variant="contained" onClick={addImg2}>Add</Button>}
+                                {added2 && <Button variant="contained" >Added</Button>}
                             </Card>
                             
                             <Card className={classes.card} variant='outlined' >
@@ -292,7 +374,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added3 && <Button variant="contained" onClick={addImg3}>Add</Button>}
+                                {added3 && <Button variant="contained" >Added</Button>}
                             </Card>
                             <Card className={classes.card} variant='outlined' >
                                 <CardActionArea>
@@ -304,7 +387,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added4 && <Button variant="contained" onClick={addImg4}>Add</Button>}
+                                {added4 && <Button variant="contained" >Added</Button>}
                             </Card>
                         </Grid>
                         }
