@@ -155,10 +155,11 @@ function Gallery() {
                                     variant='h6'
                                     component='h2'
                                     color='textSecondary'
+
                                 >
                                     {/* {pokemon.species.name} */}
-                                    style:{img.style}
-                                    text:{img.text}
+                                    {img.text}
+                                    <br></br>
                                     likes:{img.likes}
                                 </Typography>
                             </CardContent>
@@ -166,7 +167,11 @@ function Gallery() {
                     </CardActionArea>
 
                     <Button className='openModalBtn'
-                        onClick={() => { setModalOpen(true); setP(img) }}> Show detail</Button>
+                        onClick={() => { setModalOpen(true); setP(img) }}> Show detail
+                    </Button>
+                    <Button className='openModalBtn'
+                        onClick={() => { setModalOpen(true); setP(img) }}> Like
+                    </Button>
 
                 </Card>
             </Grid>
