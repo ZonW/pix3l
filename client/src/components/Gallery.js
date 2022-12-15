@@ -305,6 +305,8 @@ function Gallery() {
                         <br />
                         <br />
                         <br />
+                        <Generate generateValue={generateValue} />
+                        <br />
                         <br />
                         <br />
 
