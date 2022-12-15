@@ -7,6 +7,8 @@ import Generate from './Generate';
 import {Navigate} from 'react-router-dom';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
 
+import {AuthContext} from '../firebase/Auth';
+
 const useStyles = makeStyles({
     card: {
         zIndex: 1,
@@ -59,6 +61,7 @@ function Gallery() {
 
     let card = null;
 
+    const {currentUser} = useContext(AuthContext);
 
 
     // let disPatch = useDispatch();
@@ -78,6 +81,10 @@ function Gallery() {
 
             try {
                 setShowNotFound(false);
+                if (currentUser) {
+                    console.log(currentUser.uid);
+                    await axios.post('//www.pix3l.art/api/newUser/' + currentUser.uid);
+                }
                 const { data} = await axios.get('//www.pix3l.art/api/gallery');
                 setpokeData(data);
                 setLoading(false);
@@ -140,7 +147,6 @@ function Gallery() {
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={img.id}>
                 <Card className={classes.card} variant='outlined' >
                     <CardActionArea>
-                        {/* <Link to={`/pokemon/${pokemon.id}`}> */}
                             <CardMedia
                                 className={classes.media}
                                 component='img'

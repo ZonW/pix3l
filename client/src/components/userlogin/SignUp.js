@@ -8,7 +8,6 @@ function SignUp() {
 
   const {currentUser} = useContext(AuthContext);
 
-  //const currentUser = null;
   const [pwMatch, setPwMatch] = useState('');
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -24,10 +23,12 @@ function SignUp() {
         passwordOne.value,
         displayName
       );
+      
     } catch (error) {
       alert(error);
     }
   };
+
 
   if (currentUser) {
     return <Navigate to='/gallery/1' />;

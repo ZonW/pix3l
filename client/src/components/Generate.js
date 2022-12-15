@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Button } from '@material-ui/core';
+import {Navigate} from 'react-router-dom';
 import {useState} from 'react';
+import {AuthContext} from '../firebase/Auth';
 
 const Generate = (props) => {
 
     const [formData, setFormData] = useState(null);
+
+	const {currentUser} = useContext(AuthContext);
+
+	
 
     const saveChange = (e) => {
         //console.log(e.target.value);
@@ -12,7 +18,12 @@ const Generate = (props) => {
     };
     
     const handleChange = (e) => {
-	    props.generateValue(formData);
+		if (!currentUser) {
+			alert("need to sign in first");
+			return <Navigate to='/signin' />;
+		} else {
+			props.generateValue(formData);
+		}
     };
     return (
 		<form
