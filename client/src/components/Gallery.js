@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
+import Generate from './Generate';
+import {Navigate} from 'react-router-dom';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -32,17 +35,6 @@ const useStyles = makeStyles({
         fontWeight: 'bold',
         fontSize: 12
     }
-    // modal: {
-    //     position: 'absolute',
-    //     top: '50%',
-    //     left: '50%',
-    //     transform: 'translate(-50%, -50%)',
-    //     width: 400,
-    //     bgcolor: 'background.paper',
-    //     border: '2px solid #000',
-    //     boxShadow: 24,
-    //     p: 4,
-    // }
 
 });
 
@@ -50,17 +42,24 @@ const useStyles = makeStyles({
 
 function Gallery() {
     const classes = useStyles();
-    const [loading, setLoading] = useState(true);
-    // const [searchData, setSearchData] = useState(undefined);
-    const [pokeData, setpokeData] = useState(undefined);
-    // const [searchTerm, setSearchTerm] = useState('');
-    // const [trainer, setTrainer] = useContext(TrainerContext);
-    // const [showNext, setShowNext] = useState(true);
-    // const [showPrevious, setShowPrevious] = useState(true);
-    const [showNotFound, setShowNotFound] = useState(false);
-    // const { pagenum } = useParams();
+    const [ loading, setLoading] = useState(true);
+    const [ generateData, setGenerateData] = useState(undefined);
+    const [ pokeData, setpokeData] = useState(undefined);
+    const [ generateTerm, setGenerateTerm] = useState('');
+    const [ next, setNext ] = useState(true);
+    const [ previous, setPrevious ] = useState(true);
+    const [ outOfPage, setOutOfPage ] = useState(false);
+    const [ badRequest, setBadRequest ] = useState(false);
+    const [ generated, setGenerated] = useState(false);
+    const [ showNotFound, setShowNotFound] = useState(false);
+    const { pagenum } = useParams();
+
+    const firstPage = 1;
+    const lastPage = 10;
 
     let card = null;
+
+
 
     // let disPatch = useDispatch();
     // const CatchPokemon = pokemon => {
@@ -74,31 +73,28 @@ function Gallery() {
     const [p, setP] = useState(undefined);
 
     useEffect(() => {
-        // async function fetchData() {
-        //     try {
-        //         setShowNotFound(false);
-        //         if (!/^\d+$/.test(pagenum)) {
-        //             setShowNotFound(true);
-        //             console.log('The pagenum format wrong');
-        //         } else {
-        //             const { data } = await axios.get(`/pokemon/page/${pagenum}`);
-        //             setpokeData(data);
-        //         }
-        //         setLoading(false);
-        //     } catch (e) {
-        //         setShowNotFound(true);
-        //         setLoading(false);
-        //         console.log(e);
-        //     }
-        // }
-
 
         async function fetchData() {
+
             try {
                 setShowNotFound(false);
                 const { data} = await axios.get('//www.pix3l.art/api/gallery');
                 setpokeData(data);
                 setLoading(false);
+                if (Number(pagenum) === firstPage){
+                    setPrevious(false);
+					setNext(true);
+                } else if (Number(pagenum) === lastPage){
+                    setPrevious(true);
+					setNext(false);
+                } else if (Number(pagenum) > lastPage){
+                    setOutOfPage(true);
+                } else if (Number(pagenum) < firstPage){
+                    setBadRequest(true);
+                } else {
+                    setPrevious(true);
+					setNext(true);
+                }
             } catch (e) {
                 setShowNotFound(true);
                 setLoading(false);
@@ -106,53 +102,38 @@ function Gallery() {
             }
         }
 
-        // async function checkPagination() {
-        //     try {
-        //         if (pagenum === '0') {
-        //             setShowPrevious(false);
-        //         } else {
-        //             setShowPrevious(true);
-        //         }
-
-        //         const { data } = await axios.get(`/pokemon/page/${Number(pagenum) + 1}`);
-        //         if (data.length >= 0) {
-        //             setShowNext(true);
-        //         } else {
-        //             setShowNext(false);
-        //         }
-        //     } catch (e) {
-        //         setShowNext(false);
-        //         console.log(e);
-        //     }
-        // }
 
         fetchData();
-        // checkPagination();
-    }, []);//[pagenum]
 
-    // useEffect(() => {
-    //     console.log('search useEffect fired');
-    //     async function fetchData() {
-    //         try {
-    //             setShowNotFound(false);
-    //             console.log(`in fetch searchTerm: ${searchTerm}`);
-    //             const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
-    //             setSearchData([data]);
-    //             setLoading(false);
-    //         } catch (e) {
-    //             setShowNotFound(true);
-    //             console.log(e);
-    //         }
-    //     }
-    //     if (searchTerm) {
-    //         console.log('searchTerm is set');
-    //         fetchData();
-    //     }
-    // }, [searchTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [pagenum]);
 
-    // const searchValue = async value => {
-    //     setSearchTerm(value);
-    // };
+    useEffect(() => {
+        console.log('generateTerm useEffect fired');
+        console.log(`in fetch searchTerm: ${generateTerm}`);
+
+        async function fetchData() {
+            try {
+                //setShowNotFound(false);
+                console.log(`in fetch searchTerm: ${generateTerm}`);
+                //const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`);
+                //setSearchData([data]);
+                setGenerated(true);
+                //setLoading(false);
+            } catch (e) {
+                //setShowNotFound(true);
+                console.log(e);
+            }
+        }
+        if (generateTerm) {
+            console.log('generateTerm is set');
+            fetchData();
+        }
+    }, [generateTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+    const generateValue = async (value) => {
+        setGenerateTerm(value);
+      };
 
     const buildCard = img => {
         return (
@@ -192,19 +173,6 @@ function Gallery() {
         );
     };
 
-    // if (searchTerm) {
-    //     card =
-    //         searchData &&
-    //         searchData.map(pokemon => {
-    //             return buildCard(pokemon);
-    //         });
-    // } else {
-        // card =
-        //     pokeData &&
-        //     pokeData.map(pokemon => {
-        //         return buildCard(pokemon);
-        //     });
-    // }
 
     card =
     pokeData &&
@@ -212,40 +180,90 @@ function Gallery() {
         return buildCard(img);
     });
 
+    if (pagenum === undefined){
+        return <Navigate to='/gallery/1' />;
+    }
 
     if (loading) {
-        return (
-            <div>
-                <h2>Loading...</h2>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                {/* {!showNotFound && <Search searchValue={searchValue} />} */}
-                <br />
-                <br />
-                {/* {showPrevious && !showNotFound && !searchTerm && (
-                    <Link className='showlink' to={`/pokemon/page/${Number(pagenum) - 1}`}>
-                        Previous
-                    </Link>
-                )}
-                {showNext && !showNotFound && !searchTerm && (
-                    <Link className='showlink' to={`/pokemon/page/${Number(pagenum) + 1}`}>
-                        Next
-                    </Link>
-                )} */}
-                <br />
-                <br />
-                {showNotFound && <p>404 No Image Found</p>}
 
+		return (
+			<div>
+				<h2>Loading....</h2>
+			</div>
+		);
+	} else {
 
-                {modalOpen && <Modal props={[setModalOpen, p]} />}
-                <Grid container className={classes.grid} spacing={5}>
-                    {card}
-                </Grid>
-            </div>
-        );
+        if (outOfPage) {
+			return (
+				<div>
+					<h2>404 : NO More Image Found</h2>
+				</div>
+			);
+		} else if (badRequest) {
+			return (
+				<div>
+					<h2>400 : Bad Request</h2>
+				</div>
+			);
+		} else {
+            if (!generateTerm) {
+                return (
+                    <div>
+                        <Generate generateValue={generateValue} />
+                        <br />
+    
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
+                        {" "} 
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                        {" "}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'>'} </Link>}
+        
+                        <br />
+                        <br />
+                        {modalOpen && <Modal props={[setModalOpen, p]} />}
+                        <Grid container className={classes.grid} spacing={5}>
+                            {card}
+                        </Grid>
+                    </div>
+                );
+
+            } else {
+                return (
+                    <div>
+                        {generated  && <h2>Generating ...</h2>}
+                        {generated  && <h2>Generated !!!</h2>}
+                        {generated  && <div className="body">
+                            <Card className={classes.card} variant='outlined' >
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        component='img'
+                                        image={'https://pix3lserver.s3.amazonaws.com/s3%3A//pix3lserver/public/image/temp/79df8145-60d0-4f64-ac3b-78dcae29fc2f.jpg'}
+                                        title='AI image'
+                                    />
+            
+                                </CardActionArea>
+                            </Card>
+                        </div>}
+                        <br />
+    
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
+                        {" "} 
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                        {" "}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {">"} </Link>}
+        
+                        <br />
+                        <br />
+                        {modalOpen && <Modal props={[setModalOpen, p]} />}
+                        <Grid container className={classes.grid} spacing={5}>
+                            {card}
+                        </Grid>
+                    </div>
+                );
+            }
+            
+        }
     }
 }
 
