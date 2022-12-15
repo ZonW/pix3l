@@ -16,9 +16,7 @@ import {AuthContext} from './firebase/Auth';
 
 
 const App = () => {
-  // const {currentUser} = React.useContext(AuthContext);
-  // console.log(AuthContext);
-  // console.log(React.useContext(AuthContext));
+
   return (
     <AuthProvider>
       <Router>
@@ -37,9 +35,10 @@ const App = () => {
             <Link className='showlink' to='/signin'>
               signin
             </Link>
-            <Link className='showlink' to='/signup'>
+
+            { <Link className='showlink' to='/signup'>
               signup
-            </Link>
+            </Link> }
             {console.log(useContext(AuthContext))}
             {!useContext(AuthContext) && <Link className='showlink' to='/logout'>
               logout
