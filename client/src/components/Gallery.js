@@ -48,6 +48,7 @@ function Gallery() {
     const [ generateData, setGenerateData] = useState(null);
     const [ pokeData, setpokeData] = useState(undefined);
     const [ generateTerm, setGenerateTerm] = useState('');
+    const [ needGenerate, setNeedGenerate] = useState(false);
     const [ style, setStyle] = useState('');
     const [ next, setNext ] = useState(true);
     const [ previous, setPrevious ] = useState(true);
@@ -87,11 +88,6 @@ function Gallery() {
 
                 setLastPage(Math.ceil(data.length/50))
 
-                // if (Number(pagenum) * 20 > data.length){
-                //     setpokeData(data[(Number(pagenum)-1)*20, Number(pagenum)*20 ]);
-                // } else {
-                //     setpokeData(data[(Number(pagenum)-1)*20, data.length ]);
-                // }
 
                 console.log(data)
                 const tmp = data.slice( (Number(pagenum)-1)*50, Number(pagenum)*50);
@@ -154,13 +150,18 @@ function Gallery() {
             console.log('generateTerm is set');
             fetchData();
         }
-    }, [generateTerm, style]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [generateTerm, style, needGenerate]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     const generateValue = async (value) => {
         setGenerateTerm(value.text);
         setStyle(value.style);
         setGenerated(false);
+        if (needGenerate) {
+            setNeedGenerate(false);
+        } else {
+            setNeedGenerate(true);
+        }
     };
 
     const addImg1 = async (e) => {
