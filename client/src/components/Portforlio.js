@@ -3,7 +3,8 @@ import axios from 'axios';
 import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
-
+import { AuthContext } from '../firebase/Auth';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 const useStyles = makeStyles({
     card: {
         zIndex: 1,
@@ -39,7 +40,7 @@ const useStyles = makeStyles({
 function FindUserAllImg() {
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
-    const [pokeData, setpokeData] = useState(undefined);
+    const [pokeData, setpokeData] = useState([]);
     // const [trainer, setTrainer] = useContext(TrainerContext);
     // const [showNext, setShowNext] = useState(true);
     // const [showPrevious, setShowPrevious] = useState(true);
@@ -48,7 +49,7 @@ function FindUserAllImg() {
     const [modalOpen, setModalOpen] = useState(false);
     const [p, setP] = useState(undefined);
     const [flag, setfalg] = useState(false);
-
+    const { currentUser } = useContext(AuthContext);
 
     // const {currentUser} = React.useContext(AuthContext);
     // const uid = currentUser.uid;
@@ -81,8 +82,8 @@ function FindUserAllImg() {
                 setShowNotFound(false);
                 // const { data} = await axios.get('/api/userImage/XXYYUUOO');
                 // const { data } = await axios.get('/api/userImage/XXYYUUOO');
-                const { data } = await axios.get('//www.pix3l.art/api/getUser/11111');
-                setUid('11111')
+                const { data } = await axios.get('//www.pix3l.art/api/getUser/' + currentUser.uid);
+                setUid(currentUser.uid)
                 // http://www.pix3l.art/api/getUser/qwerqwer
                 console.log(data);
                 let images = data.images
@@ -153,21 +154,20 @@ function FindUserAllImg() {
                 <h2>Loading...</h2>
             </div>
         );
-    } else {
+    }
+    else {
+        // console.log(pokeData);
         return (
             <div>
                 <br />
                 <br />
-                {/* {showPrevious && !showNotFound && !searchTerm && (
-                    <Link className='showlink' to={`/pokemon/page/${Number(pagenum) - 1}`}>
-                        Previous
-                    </Link>
-                )}
-                {showNext && !showNotFound && !searchTerm && (
-                    <Link className='showlink' to={`/pokemon/page/${Number(pagenum) + 1}`}>
-                        Next
-                    </Link>
-                )} */}
+                {pokeData.length == 0 &&
+                    <div>
+                        <h2>You should generate a picture first</h2>
+                        <Link to="/gallery/1">Go TO Generate</Link>
+                    </div>
+
+                }
                 <br />
                 <br />
                 {showNotFound && <p>404 No Pokemons Found</p>}
