@@ -59,10 +59,11 @@ function Gallery() {
     const [ added2, setAdded2] = useState(false);
     const [ added3, setAdded3] = useState(false);
     const [ added4, setAdded4] = useState(false);
+    const [ lastPage, setLastPage] = useState(1);
     const { pagenum } = useParams();
 
     const firstPage = 1;
-    const lastPage = 6;
+    //const lastPage = 6;
 
     let card = null;
 
@@ -82,8 +83,22 @@ function Gallery() {
                     console.log(currentUser.uid);
                     await axios.post('//www.pix3l.art/api/newUser/' + currentUser.uid);
                 }
-                const { data} = await axios.get('//www.pix3l.art/api/gallery');
-                setpokeData(data);
+                const { data } = await axios.get('//www.pix3l.art/api/gallery');
+
+                setLastPage(Math.ceil(data.length/20))
+
+                // if (Number(pagenum) * 20 > data.length){
+                //     setpokeData(data[(Number(pagenum)-1)*20, Number(pagenum)*20 ]);
+                // } else {
+                //     setpokeData(data[(Number(pagenum)-1)*20, data.length ]);
+                // }
+
+                console.log(data)
+                const tmp = data.slice( (Number(pagenum)-1)*20, Number(pagenum)*20);
+
+                console.log(tmp)
+                setpokeData(tmp);
+
                 setLoading(false);
                 if (Number(pagenum) === firstPage){
                     setPrevious(false);
@@ -139,13 +154,14 @@ function Gallery() {
             console.log('generateTerm is set');
             fetchData();
         }
-    }, [generateTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [generateTerm, style]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     const generateValue = async (value) => {
         setGenerateTerm(value.text);
         setStyle(value.style);
-      };
+        setGenerated(false);
+    };
 
     const addImg1 = async (e) => {
         e.preventDefault();
@@ -222,6 +238,7 @@ function Gallery() {
             console.log(err);
         }	
     };
+
 
     const buildCard = img => {
         return (

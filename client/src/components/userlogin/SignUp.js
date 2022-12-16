@@ -3,6 +3,7 @@ import {Navigate} from 'react-router-dom';
 import {doCreateUserWithEmailAndPassword} from '../../firebase/FirebaseFunctions';
 import {AuthContext} from '../../firebase/Auth';
 import SocialSignIn from './SocialSignIn';
+import { Button , TextField} from '@material-ui/core';
 
 function SignUp() {
 
@@ -16,6 +17,7 @@ function SignUp() {
       setPwMatch('Passwords do not match');
       return false;
     }
+  
 
     try {
       await doCreateUserWithEmailAndPassword(
@@ -35,64 +37,74 @@ function SignUp() {
   }
 
   return (
+
     <div>
       <h1>Sign up</h1>
       {pwMatch && <h4 className='error'>{pwMatch}</h4>}
       <form onSubmit={handleSignUp}>
         <div className='form-group'>
           <label>
-            Name:
-            <input
-              className='form-control'
-              required
+
+            <TextField sx={{ m: 1, width: '100ch' }} id="name"  variant="outlined"  className='form-control'
+            helperText="Please enter your name"
+
+              label="Name:"
               name='displayName'
-              type='text'
+              type='name'
               placeholder='Name'
-            />
+              autoComplete='off'
+              required/>
           </label>
         </div>
         <div className='form-group'>
           <label>
-            Email:
-            <input
-              className='form-control'
-              required
+            
+             <TextField sx={{ m: 1, width: '100ch' }} id="outlined-basic"  variant="outlined"  className='form-control'
+             helperText="Please enter your email"
+
+              label="Email:"
               name='email'
               type='email'
               placeholder='Email'
-            />
+              autoComplete='off'
+              required/>
           </label>
         </div>
         <div className='form-group'>
           <label>
-            Password:
-            <input
-              className='form-control'
-              id='passwordOne'
+
+             <TextField sx={{ m: 1, width: '100ch' }} id="outlined-basic"  variant="outlined"  className='form-control'
+            helperText="Please enter your password"
+              label="Password:"
               name='passwordOne'
               type='password'
               placeholder='Password'
               autoComplete='off'
-              required
-            />
-          </label>
+              required/>
+
+          </label>  
         </div>
+  
         <div className='form-group'>
           <label>
-            Confirm Password:
-            <input
-              className='form-control'
+           
+            <TextField  id="outlined-basic"  variant="outlined"  className='form-control'
+            helperText="Please re-enter your password"
+              label="Confirm Password:"
               name='passwordTwo'
               type='password'
               placeholder='Confirm Password'
               autoComplete='off'
-              required
-            />
+              required/>
+
           </label>
+          
         </div>
-        <button id='submitButton' name='submitButton' type='submit'>
-          Sign Up
-        </button>
+        <br></br>
+
+        <Button variant="contained" color = 'primary'  type='submit' >Sign Up</Button>
+      
+
       </form>
       <br />
       <SocialSignIn />
