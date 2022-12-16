@@ -4,10 +4,10 @@ import axios from 'axios';
 import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
 import Generate from './Generate';
-import {Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
 
-import {AuthContext} from '../firebase/Auth';
+import { AuthContext } from '../firebase/Auth';
 
 const useStyles = makeStyles({
     card: {
@@ -44,21 +44,21 @@ const useStyles = makeStyles({
 
 function Gallery() {
     const classes = useStyles();
-    const [ loading, setLoading] = useState(true);
-    const [ generateData, setGenerateData] = useState(null);
-    const [ pokeData, setpokeData] = useState(undefined);
-    const [ generateTerm, setGenerateTerm] = useState('');
-    const [ style, setStyle] = useState('');
-    const [ next, setNext ] = useState(true);
-    const [ previous, setPrevious ] = useState(true);
-    const [ outOfPage, setOutOfPage ] = useState(false);
-    const [ badRequest, setBadRequest ] = useState(false);
-    const [ generated, setGenerated] = useState(false);
-    const [ showNotFound, setShowNotFound] = useState(false);
-    const [ added1, setAdded1] = useState(false);
-    const [ added2, setAdded2] = useState(false);
-    const [ added3, setAdded3] = useState(false);
-    const [ added4, setAdded4] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [generateData, setGenerateData] = useState(null);
+    const [pokeData, setpokeData] = useState(undefined);
+    const [generateTerm, setGenerateTerm] = useState('');
+    const [style, setStyle] = useState('');
+    const [next, setNext] = useState(true);
+    const [previous, setPrevious] = useState(true);
+    const [outOfPage, setOutOfPage] = useState(false);
+    const [badRequest, setBadRequest] = useState(false);
+    const [generated, setGenerated] = useState(false);
+    const [showNotFound, setShowNotFound] = useState(false);
+    const [added1, setAdded1] = useState(false);
+    const [added2, setAdded2] = useState(false);
+    const [added3, setAdded3] = useState(false);
+    const [added4, setAdded4] = useState(false);
     const { pagenum } = useParams();
 
     const firstPage = 1;
@@ -66,7 +66,7 @@ function Gallery() {
 
     let card = null;
 
-    const {currentUser} = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
 
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -82,22 +82,22 @@ function Gallery() {
                     console.log(currentUser.uid);
                     await axios.post('//www.pix3l.art/api/newUser/' + currentUser.uid);
                 }
-                const { data} = await axios.get('//www.pix3l.art/api/gallery');
+                const { data } = await axios.get('//www.pix3l.art/api/gallery');
                 setpokeData(data);
                 setLoading(false);
-                if (Number(pagenum) === firstPage){
+                if (Number(pagenum) === firstPage) {
                     setPrevious(false);
-					setNext(true);
-                } else if (Number(pagenum) === lastPage){
+                    setNext(true);
+                } else if (Number(pagenum) === lastPage) {
                     setPrevious(true);
-					setNext(false);
-                } else if (Number(pagenum) > lastPage){
+                    setNext(false);
+                } else if (Number(pagenum) > lastPage) {
                     setOutOfPage(true);
-                } else if (Number(pagenum) < firstPage){
+                } else if (Number(pagenum) < firstPage) {
                     setBadRequest(true);
                 } else {
                     setPrevious(true);
-					setNext(true);
+                    setNext(true);
                 }
             } catch (e) {
                 setShowNotFound(true);
@@ -120,9 +120,9 @@ function Gallery() {
 
                 console.log(`in fetch generateTerm: ${generateTerm}`);
                 console.log(`style: ${style}`);
-                if (generateTerm && style){
+                if (generateTerm && style) {
                     const url = "http://www.pix3l.art/api/generate?style=" + style + "&text=" + generateTerm;
-                    const {data} = await axios.get(url);
+                    const { data } = await axios.get(url);
                     console.log(data);
                     setGenerateData(data);
                     setGenerated(true);
@@ -145,7 +145,7 @@ function Gallery() {
     const generateValue = async (value) => {
         setGenerateTerm(value.text);
         setStyle(value.style);
-      };
+    };
 
     const addImg1 = async (e) => {
         e.preventDefault();
@@ -153,17 +153,17 @@ function Gallery() {
             await axios({
                 method: 'post',
                 url: '//www.pix3l.art/api/addImage',
-                data:  {
-                    userId: currentUser.uid, 
-                    imageId: generateData[0].id, 
-                    style: style, 
+                data: {
+                    userId: currentUser.uid,
+                    imageId: generateData[0].id,
+                    style: style,
                     text: generateTerm
                 }
-              });
-              setAdded1(true);
+            });
+            setAdded1(true);
         } catch (err) {
             console.log(err);
-        }	
+        }
     };
 
     const addImg2 = async (e) => {
@@ -172,17 +172,17 @@ function Gallery() {
             await axios({
                 method: 'post',
                 url: '//www.pix3l.art/api/addImage',
-                data:  {
-                    userId: currentUser.uid, 
-                    imageId: generateData[1].id, 
-                    style: style, 
+                data: {
+                    userId: currentUser.uid,
+                    imageId: generateData[1].id,
+                    style: style,
                     text: generateTerm
                 }
-              });
+            });
             setAdded2(true);
         } catch (err) {
             console.log(err);
-        }	
+        }
     };
 
     const addImg3 = async (e) => {
@@ -191,36 +191,36 @@ function Gallery() {
             await axios({
                 method: 'post',
                 url: '//www.pix3l.art/api/addImage',
-                data:  {
-                    userId: currentUser.uid, 
-                    imageId: generateData[2].id, 
-                    style: style, 
+                data: {
+                    userId: currentUser.uid,
+                    imageId: generateData[2].id,
+                    style: style,
                     text: generateTerm
                 }
-              });
-              setAdded3(true);
+            });
+            setAdded3(true);
         } catch (err) {
             console.log(err);
-        }	
+        }
     };
-    
+
     const addImg4 = async (e) => {
         e.preventDefault();
         try {
             await axios({
                 method: 'post',
                 url: '//www.pix3l.art/api/addImage',
-                data:  {
-                    userId: currentUser.uid, 
-                    imageId: generateData[3].id, 
-                    style: style, 
+                data: {
+                    userId: currentUser.uid,
+                    imageId: generateData[3].id,
+                    style: style,
                     text: generateTerm
                 }
-              });
-              setAdded4(true);
+            });
+            setAdded4(true);
         } catch (err) {
             console.log(err);
-        }	
+        }
     };
 
     const buildCard = img => {
@@ -228,33 +228,33 @@ function Gallery() {
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={img.id}>
                 <Card className={classes.card} variant='outlined' >
                     <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                component='img'
-                                image={img.url ? img.url : noImage}
-                                title='user published image'
-                            />
+                        <CardMedia
+                            className={classes.media}
+                            component='img'
+                            image={img.url ? img.url : noImage}
+                            title='user published image'
+                        />
 
-                            <CardContent>
-                                <Typography
-                                    className={classes.titleHead}
-                                    gutterBottom
-                                    variant='h6'
-                                    component='h2'
-                                    color='textSecondary'
+                        <CardContent>
+                            <Typography
+                                className={classes.titleHead}
+                                gutterBottom
+                                variant='h6'
+                                component='h2'
+                                color='textSecondary'
 
-                                >
+                            >
 
-        
-                                    style:{img.style}
-                                    text:{img.text}
-                                    {/* {pokemon.species.name} */}
-                                    {img.text}
-                                    <br></br>
-                                    likes:{img.likes}
-                                </Typography>
-                            </CardContent>
-                   
+
+                                style:{img.style}
+                                text:{img.text}
+                                {/* {pokemon.species.name} */}
+                                {img.text}
+                                <br></br>
+                                likes:{img.likes}
+                            </Typography>
+                        </CardContent>
+
                     </CardActionArea>
 
                     <Button className='openModalBtn'
@@ -271,49 +271,49 @@ function Gallery() {
 
 
     card =
-    pokeData &&
-    pokeData.map(img => {
-        return buildCard(img);
-    });
+        pokeData &&
+        pokeData.map(img => {
+            return buildCard(img);
+        });
 
-    if (pagenum === undefined){
+    if (pagenum === undefined) {
         return <Navigate to='/gallery/1' />;
     }
 
     if (loading) {
 
-		return (
-			<div>
-				<h2>Loading....</h2>
-			</div>
-		);
-	} else {
+        return (
+            <div>
+                <h2>Loading....</h2>
+            </div>
+        );
+    } else {
 
         if (outOfPage) {
-			return (
-				<div>
-					<h2>404 : NO More Image Found</h2>
-				</div>
-			);
-		} else if (badRequest) {
-			return (
-				<div>
-					<h2>400 : Bad Request</h2>
-				</div>
-			);
-		} else {
+            return (
+                <div>
+                    <h2>404 : NO More Image Found</h2>
+                </div>
+            );
+        } else if (badRequest) {
+            return (
+                <div>
+                    <h2>400 : Bad Request</h2>
+                </div>
+            );
+        } else {
             if (!generateTerm) {
                 return (
                     <div>
                         <Generate generateValue={generateValue} />
                         <br />
-    
-                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
-                        {" "} 
+
+                        {previous && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
+                        {" "}
                         {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
                         {" "}
-                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'>'} </Link>}
-        
+                        {next && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'>'} </Link>}
+
                         <br />
                         <br />
                         {modalOpen && <Modal props={[setModalOpen, p]} />}
@@ -326,71 +326,71 @@ function Gallery() {
             } else {
                 return (
                     <div>
-                        {!generated  && <h2>Generating ...</h2>}
-                        {!generated  && <h4>It may take a while...</h4>}
-                        {generated  && <h2>Generated !!!</h2>}
+                        {!generated && <h2>Generating ...</h2>}
+                        {!generated && <h4>It may take a while...</h4>}
+                        {generated && <h2>Generated !!!</h2>}
                         <br />
                         <br />
                         <br />
                         <br />
                         <br />
 
-                        {generated  && 
-                        <Grid container spacing={3} >
-                            <Card className={classes.card} variant='outlined' >
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        component='img'
-                                        image={generateData[0].url}
-                                        title='AI image'
-                                    />
-            
-                                </CardActionArea>
-                                {!added1 && <Button variant="contained" onClick={addImg1}>Add</Button>}
-                                {added1 && <Button variant="contained" >Added</Button>}
-                            </Card>
-                            <Card className={classes.card} variant='outlined' >
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        component='img'
-                                        image={generateData[1].url}
-                                        title='AI image'
-                                    />
-            
-                                </CardActionArea>
-                                {!added2 && <Button variant="contained" onClick={addImg2}>Add</Button>}
-                                {added2 && <Button variant="contained" >Added</Button>}
-                            </Card>
-                            
-                            <Card className={classes.card} variant='outlined' >
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        component='img'
-                                        image={generateData[2].url}
-                                        title='AI image'
-                                    />
-            
-                                </CardActionArea>
-                                {!added3 && <Button variant="contained" onClick={addImg3}>Add</Button>}
-                                {added3 && <Button variant="contained" >Added</Button>}
-                            </Card>
-                            <Card className={classes.card} variant='outlined' >
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        component='img'
-                                        image={generateData[3].url}
-                                        title='AI image'
-                                    />
-            
-                                </CardActionArea>
-                                {!added4 && <Button variant="contained" onClick={addImg4}>Add</Button>}
-                                {added4 && <Button variant="contained" >Added</Button>}
-                            </Card>
-                        </Grid>
+                        {generated &&
+                            <Grid container spacing={3} >
+                                <Card className={classes.card} variant='outlined' >
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            component='img'
+                                            image={generateData[0].url}
+                                            title='AI image'
+                                        />
+
+                                    </CardActionArea>
+                                    {!added1 && <Button variant="contained" onClick={addImg1}>Add</Button>}
+                                    {added1 && <Button variant="contained" >Added</Button>}
+                                </Card>
+                                <Card className={classes.card} variant='outlined' >
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            component='img'
+                                            image={generateData[1].url}
+                                            title='AI image'
+                                        />
+
+                                    </CardActionArea>
+                                    {!added2 && <Button variant="contained" onClick={addImg2}>Add</Button>}
+                                    {added2 && <Button variant="contained" >Added</Button>}
+                                </Card>
+
+                                <Card className={classes.card} variant='outlined' >
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            component='img'
+                                            image={generateData[2].url}
+                                            title='AI image'
+                                        />
+
+                                    </CardActionArea>
+                                    {!added3 && <Button variant="contained" onClick={addImg3}>Add</Button>}
+                                    {added3 && <Button variant="contained" >Added</Button>}
+                                </Card>
+                                <Card className={classes.card} variant='outlined' >
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            component='img'
+                                            image={generateData[3].url}
+                                            title='AI image'
+                                        />
+
+                                    </CardActionArea>
+                                    {!added4 && <Button variant="contained" onClick={addImg4}>Add</Button>}
+                                    {added4 && <Button variant="contained" >Added</Button>}
+                                </Card>
+                            </Grid>
                         }
                         <br />
                         <br />
@@ -403,13 +403,13 @@ function Gallery() {
                         <br />
                         <br />
 
-    
-                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
-                        {" "} 
+
+                        {previous && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
+                        {" "}
                         {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
                         {" "}
-                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {">"} </Link>}
-        
+                        {next && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {">"} </Link>}
+
                         <br />
                         <br />
                         {modalOpen && <Modal props={[setModalOpen, p]} />}
@@ -419,7 +419,7 @@ function Gallery() {
                     </div>
                 );
             }
-            
+
         }
     }
 }

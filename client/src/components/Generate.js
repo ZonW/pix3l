@@ -1,38 +1,38 @@
-import React, {useContext} from 'react';
-import { Button , TextField} from '@material-ui/core';
-import {Navigate} from 'react-router-dom';
-import {useState} from 'react';
-import {AuthContext} from '../firebase/Auth';
+import React, { useContext } from 'react';
+import { Button, TextField } from '@material-ui/core';
+import { Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { AuthContext } from '../firebase/Auth';
 
 const Generate = (props) => {
 
-    const [formData, setFormData] = useState(null);
+	const [formData, setFormData] = useState(null);
 	const [style, setStyle] = useState('noStyle');
 
-	const {currentUser} = useContext(AuthContext);
+	const { currentUser } = useContext(AuthContext);
 
-	
 
-    const saveChange = (e) => {
-        //console.log(e.target.value);
-        setFormData(e.target.value);
-    };
-    
-    const handleChange = (e) => {
+
+	const saveChange = (e) => {
+		//console.log(e.target.value);
+		setFormData(e.target.value);
+	};
+
+	const handleChange = (e) => {
 		if (!currentUser) {
 			alert("need to sign in first");
 			return <Navigate to='/signin' />;
 		} else {
-			if (style === 'noStyle'){
+			if (style === 'noStyle') {
 				alert("please choose a style!");
-			} else if (!formData){
+			} else if (!formData) {
 				alert("Input something!");
 			} else {
-				props.generateValue({style:style, text:formData});
+				props.generateValue({ style: style, text: formData });
 			}
 
 		}
-    };
+	};
 
 	const styleChangeOne = (e) => {
 		if (!currentUser) {
@@ -41,7 +41,7 @@ const Generate = (props) => {
 		} else {
 			setStyle('fantasy-world-generator');
 		}
-    };
+	};
 
 	const styleChangeTwo = (e) => {
 		if (!currentUser) {
@@ -50,7 +50,7 @@ const Generate = (props) => {
 		} else {
 			setStyle('future-architecture-generator');
 		}
-    };
+	};
 
 	const styleChangeThree = (e) => {
 		if (!currentUser) {
@@ -59,9 +59,9 @@ const Generate = (props) => {
 		} else {
 			setStyle('stable-diffusion');
 		}
-    };
+	};
 
-    return (
+	return (
 		<form
 			method='POST '
 			onSubmit={(e) => {
@@ -72,24 +72,24 @@ const Generate = (props) => {
 		>
 			<label>
 				<span>Keywords you want to generate: </span>
-                <br/>
-                <br/>
-				<TextField id="filled-basic" label="Filled" variant="filled" name='generateTerm' onChange={(e) =>saveChange(e)}/>
+				<br />
+				<br />
+				<TextField id="filled-basic" label="Filled" variant="filled" name='generateTerm' onChange={(e) => saveChange(e)} />
 				{/* <input autoComplete='off' type='text' name='generateTerm' onChange={(e) =>saveChange(e)} />
                 <br/> */}
-                <br/>
-				<br/>
-				{style === 'fantasy-world-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeOne} > fantasy-world  </Button>} 
-				{style && style !== 'fantasy-world-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeOne} > fantasy-world  </Button>}
+				<br />
+				<br />
+				{style === 'fantasy-world-generator' && <Button variant="contained" color='primary' onClick={styleChangeOne} > fantasy-world  </Button>}
+				{style && style !== 'fantasy-world-generator' && <Button variant="outlined" color='primary' onClick={styleChangeOne} > fantasy-world  </Button>}
 				{" "}
-				{style === 'future-architecture-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeTwo} >  future-architecture  </Button> }
-				{style && style !== 'future-architecture-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeTwo} >  future-architecture  </Button> }
+				{style === 'future-architecture-generator' && <Button variant="contained" color='primary' onClick={styleChangeTwo} >  future-architecture  </Button>}
+				{style && style !== 'future-architecture-generator' && <Button variant="outlined" color='primary' onClick={styleChangeTwo} >  future-architecture  </Button>}
 				{" "}
-				{style === 'stable-diffusion' && <Button variant="contained" color = 'primary' onClick={styleChangeThree} > stable-diffusion </Button> }
-				{style && style !== 'stable-diffusion' && <Button variant="outlined" color = 'primary' onClick={styleChangeThree} >stable-diffusion</Button> }
-				<br/>
-				<br/>
-                <Button variant="contained" color = 'primary' onClick={handleChange} >Generate</Button>
+				{style === 'stable-diffusion' && <Button variant="contained" color='primary' onClick={styleChangeThree} > stable-diffusion </Button>}
+				{style && style !== 'stable-diffusion' && <Button variant="outlined" color='primary' onClick={styleChangeThree} >stable-diffusion</Button>}
+				<br />
+				<br />
+				<Button variant="contained" color='primary' onClick={handleChange} >Generate</Button>
 
 			</label>
 		</form>

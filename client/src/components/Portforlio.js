@@ -48,7 +48,7 @@ function FindUserAllImg() {
     const [modalOpen, setModalOpen] = useState(false);
     const [p, setP] = useState(undefined);
     const [flag, setfalg] = useState(false);
-    
+
 
     // const {currentUser} = React.useContext(AuthContext);
     // const uid = currentUser.uid;
@@ -59,13 +59,13 @@ function FindUserAllImg() {
         try {
             console.log("I am in deletehanld");
             console.log(`${id}`);
-            const{data} = await axios.post('//www.pix3l.art/api/deleteImage', {
-                userId : uid,
+            const { data } = await axios.post('//www.pix3l.art/api/deleteImage', {
+                userId: uid,
                 imageId: id
             })
-            if(data.length != 0){
+            if (data.length != 0) {
                 setfalg(!flag);
-            }else{
+            } else {
                 console.log("check whether delete the img ")
             }
         } catch (e) {
@@ -94,26 +94,6 @@ function FindUserAllImg() {
                 console.log(e);
             }
         }
-
-        // async function checkPagination() {
-        //     try {
-        //         if (pagenum === '0') {
-        //             setShowPrevious(false);
-        //         } else {
-        //             setShowPrevious(true);
-        //         }
-
-        //         const { data } = await axios.get(`/pokemon/page/${Number(pagenum) + 1}`);
-        //         if (data.length >= 0) {
-        //             setShowNext(true);
-        //         } else {
-        //             setShowNext(false);
-        //         }
-        //     } catch (e) {
-        //         setShowNext(false);
-        //         console.log(e);
-        //     }
-        // }
 
         fetchData();
         // checkPagination();
