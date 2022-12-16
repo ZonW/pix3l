@@ -96,7 +96,10 @@ function Gallery() {
                 setpokeData(tmp);
 
                 setLoading(false);
+                setOutOfPage(false);
+                setBadRequest(false);
                 if (Number(pagenum) === firstPage){
+                    
                     setPrevious(false);
 					setNext(true);
                 } else if (Number(pagenum) === lastPage){
