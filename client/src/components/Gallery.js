@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     },
     titleHead: {
         borderBottom: '1px solid #1e8678',
-        fontWeight: 'bold'
+        fontSize: 12
     },
     grid: {
         flexGrow: 1,
@@ -259,16 +259,12 @@ function Gallery() {
                                     variant='h6'
                                     component='h2'
                                     color='textSecondary'
-
                                 >
-
-        
-                                    style:{img.style}
-                                    text:{img.text}
-                                    {/* {pokemon.species.name} */}
-                                    {img.text}
+                                    style: {img.style}
                                     <br></br>
-                                    likes:{img.likes}
+                                    text: {img.text}
+                                    <br></br>
+                                    likes: {img.likes.length}
                                 </Typography>
                             </CardContent>
                    
