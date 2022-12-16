@@ -69,11 +69,15 @@ function Modal({ props }) {
                                 >
                                 </Typography>
                             </CardContent>
-                            style:{img.style}
+                            Style: {img.style}
                             <br />
-                            text:{img.text}
+                            Text: {img.text}
                             <br />
-                            likes:{img.likes}
+                            <img
+                                    alt='likes'
+                                    src='/imgs/like.png'
+                                />
+                                 {img.likes.length}
                         </CardActionArea>
                     </Card>
                 </div>

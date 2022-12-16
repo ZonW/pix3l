@@ -6,6 +6,7 @@ import {
   doSignInWithEmailAndPassword,
   doPasswordReset,
 } from '../../firebase/FirebaseFunctions';
+import { Button , TextField} from '@material-ui/core';
 
 function SignIn() {
 
@@ -44,35 +45,39 @@ function SignIn() {
         <form onSubmit={handleLogin}>
           <div className='form-group'>
             <label>
-              Email:
-              <input
-                className='form-control'
-                name='email'
-                id='email'
-                type='email'
-                placeholder='Email'
-                required
-              />
+
+               <TextField sx={{ m: 1, width: '100ch' }} id="email"  variant="outlined"  className='form-control'
+                helperText="Please enter your email"
+                  label="Email:"
+
+                  name='email'
+                  type='email'
+                  placeholder='Email'
+                  autoComplete='off'
+                  required/>
             </label>
           </div>
           <div className='form-group'>
             <label>
-              Password:
-              <input
-                className='form-control'
-                name='password'
-                type='password'
-                placeholder='Password'
-                autoComplete='off'
-                required
-              />
+
+             <TextField sx={{ m: 0, width: '10' }} id="password"  variant="outlined"  className='form-control'
+            helperText="Please enter your password"
+            label="Password:"
+            name='password'
+            type='password'
+            placeholder='Password:'
+            autoComplete='off'
+            required/>
             </label>
           </div>
-          <button type='submit'>Log in</button>
+
+          <br></br>
+
+          <Button variant="contained" color = 'primary'  type='submit' >Log in</Button>
+          {" "}
+
+          <Button variant="contained" color = 'primary' className='forgotPassword' onClick={passwordReset} >Forgot Password</Button>
   
-          <button className='forgotPassword' onClick={passwordReset}>
-            Forgot Password
-          </button>
         </form>
   
         <br />

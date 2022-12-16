@@ -5,7 +5,7 @@ import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
 import Generate from './Generate';
 import {Navigate} from 'react-router-dom';
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, LinearProgress, CircularProgress } from '@material-ui/core';
 
 import {AuthContext} from '../firebase/Auth';
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     },
     titleHead: {
         borderBottom: '1px solid #1e8678',
-        fontWeight: 'bold'
+        fontSize: 15
     },
     grid: {
         flexGrow: 1,
@@ -55,10 +55,15 @@ function Gallery() {
     const [ badRequest, setBadRequest ] = useState(false);
     const [ generated, setGenerated] = useState(false);
     const [ showNotFound, setShowNotFound] = useState(false);
+    const [ added1, setAdded1] = useState(false);
+    const [ added2, setAdded2] = useState(false);
+    const [ added3, setAdded3] = useState(false);
+    const [ added4, setAdded4] = useState(false);
+    const [ lastPage, setLastPage] = useState(1);
     const { pagenum } = useParams();
 
     const firstPage = 1;
-    const lastPage = 6;
+    //const lastPage = 6;
 
     let card = null;
 
@@ -78,8 +83,22 @@ function Gallery() {
                     console.log(currentUser.uid);
                     await axios.post('//www.pix3l.art/api/newUser/' + currentUser.uid);
                 }
-                const { data} = await axios.get('//www.pix3l.art/api/gallery');
-                setpokeData(data);
+                const { data } = await axios.get('//www.pix3l.art/api/gallery');
+
+                setLastPage(Math.ceil(data.length/50))
+
+                // if (Number(pagenum) * 20 > data.length){
+                //     setpokeData(data[(Number(pagenum)-1)*20, Number(pagenum)*20 ]);
+                // } else {
+                //     setpokeData(data[(Number(pagenum)-1)*20, data.length ]);
+                // }
+
+                console.log(data)
+                const tmp = data.slice( (Number(pagenum)-1)*50, Number(pagenum)*50);
+
+                console.log(tmp)
+                setpokeData(tmp);
+
                 setLoading(false);
                 if (Number(pagenum) === firstPage){
                     setPrevious(false);
@@ -135,13 +154,91 @@ function Gallery() {
             console.log('generateTerm is set');
             fetchData();
         }
-    }, [generateTerm]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [generateTerm, style]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
     const generateValue = async (value) => {
         setGenerateTerm(value.text);
         setStyle(value.style);
-      };
+        setGenerated(false);
+    };
+
+    const addImg1 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[0].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+              setAdded1(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+
+    const addImg2 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[1].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+            setAdded2(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+
+    const addImg3 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[2].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+              setAdded3(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+    
+    const addImg4 = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/addImage',
+                data:  {
+                    userId: currentUser.uid, 
+                    imageId: generateData[3].id, 
+                    style: style, 
+                    text: generateTerm
+                }
+              });
+              setAdded4(true);
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+
 
     const buildCard = img => {
         return (
@@ -163,17 +260,25 @@ function Gallery() {
                                     component='h2'
                                     color='textSecondary'
                                 >
-        
-                                    style:{img.style}
-                                    text:{img.text}
-                                    likes:{img.likes}
+
+                                    {img.text}
+                                    <br></br>
+                                    <img
+                                    alt='likes'
+                                    src='/imgs/like.png'
+                                />
+                                    {img.likes.length}
                                 </Typography>
                             </CardContent>
                    
                     </CardActionArea>
 
                     <Button className='openModalBtn'
-                        onClick={() => { setModalOpen(true); setP(img) }}> Show detail</Button>
+                        onClick={() => { setModalOpen(true); setP(img) }}> Show detail
+                    </Button>
+                    <Button className='openModalBtn'
+                        onClick={() => { setModalOpen(true); setP(img) }}> Like
+                    </Button>
 
                 </Card>
             </Grid>
@@ -195,7 +300,7 @@ function Gallery() {
 
 		return (
 			<div>
-				<h2>Loading....</h2>
+				<CircularProgress />
 			</div>
 		);
 	} else {
@@ -203,13 +308,13 @@ function Gallery() {
         if (outOfPage) {
 			return (
 				<div>
-					<h2>404 : NO More Image Found</h2>
+					<h2>You reach the end!</h2>
 				</div>
 			);
 		} else if (badRequest) {
 			return (
 				<div>
-					<h2>400 : Bad Request</h2>
+					<h2>Something wrong happend! Please Reload!</h2>
 				</div>
 			);
 		} else {
@@ -238,7 +343,7 @@ function Gallery() {
                 return (
                     <div>
                         {!generated  && <h2>Generating ...</h2>}
-                        {!generated  && <h4>It may take a while...</h4>}
+                        {!generated  && <LinearProgress />}
                         {generated  && <h2>Generated !!!</h2>}
                         <br />
                         <br />
@@ -258,7 +363,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added1 && <Button variant="contained" onClick={addImg1}>Add</Button>}
+                                {added1 && <Button variant="contained" >Added</Button>}
                             </Card>
                             <Card className={classes.card} variant='outlined' >
                                 <CardActionArea>
@@ -270,7 +376,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added2 && <Button variant="contained" onClick={addImg2}>Add</Button>}
+                                {added2 && <Button variant="contained" >Added</Button>}
                             </Card>
                             
                             <Card className={classes.card} variant='outlined' >
@@ -283,7 +390,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added3 && <Button variant="contained" onClick={addImg3}>Add</Button>}
+                                {added3 && <Button variant="contained" >Added</Button>}
                             </Card>
                             <Card className={classes.card} variant='outlined' >
                                 <CardActionArea>
@@ -295,7 +403,8 @@ function Gallery() {
                                     />
             
                                 </CardActionArea>
-                                <Button variant="contained"  >Add</Button>
+                                {!added4 && <Button variant="contained" onClick={addImg4}>Add</Button>}
+                                {added4 && <Button variant="contained" >Added</Button>}
                             </Card>
                         </Grid>
                         }
