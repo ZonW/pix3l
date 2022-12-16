@@ -170,7 +170,7 @@ function FindUserAllImg() {
                 }
                 <br />
                 <br />
-                {showNotFound && <p>404 No Pokemons Found</p>}
+                {showNotFound && <p>404 No Data Found</p>}
                 {modalOpen && <Modal props={[setModalOpen, p]} />}
                 <Grid container className={classes.grid} spacing={5}>
                     {card}
