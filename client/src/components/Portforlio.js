@@ -122,11 +122,15 @@ function FindUserAllImg() {
                                 color='textSecondary'
                             >
                                 {/* {pokemon.species.name} */}
-                                style:{img.style}
+                                Style: {img.style}
                                 <br></br>
-                                text:{img.text}
+                                Text: {img.text}
                                 <br></br>
-                                likes:{img.likes.length}
+                                <img
+                                    alt='likes'
+                                    src='/imgs/like.png'
+                                />
+                                 {img.likes.length}
                             </Typography>
                         </CardContent>
                         {/* </Link> */}

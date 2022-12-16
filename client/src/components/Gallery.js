@@ -5,7 +5,7 @@ import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
 import Generate from './Generate';
 import {Navigate} from 'react-router-dom';
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, LinearProgress, CircularProgress } from '@material-ui/core';
 
 import {AuthContext} from '../firebase/Auth';
 
@@ -85,7 +85,7 @@ function Gallery() {
                 }
                 const { data } = await axios.get('//www.pix3l.art/api/gallery');
 
-                setLastPage(Math.ceil(data.length/20))
+                setLastPage(Math.ceil(data.length/50))
 
                 // if (Number(pagenum) * 20 > data.length){
                 //     setpokeData(data[(Number(pagenum)-1)*20, Number(pagenum)*20 ]);
@@ -94,7 +94,7 @@ function Gallery() {
                 // }
 
                 console.log(data)
-                const tmp = data.slice( (Number(pagenum)-1)*20, Number(pagenum)*20);
+                const tmp = data.slice( (Number(pagenum)-1)*50, Number(pagenum)*50);
 
                 console.log(tmp)
                 setpokeData(tmp);
@@ -300,7 +300,7 @@ function Gallery() {
 
 		return (
 			<div>
-				<h2>Loading....</h2>
+				<CircularProgress />
 			</div>
 		);
 	} else {
@@ -343,7 +343,7 @@ function Gallery() {
                 return (
                     <div>
                         {!generated  && <h2>Generating ...</h2>}
-                        {!generated  && <h4>It may take a while...</h4>}
+                        {!generated  && <LinearProgress />}
                         {generated  && <h2>Generated !!!</h2>}
                         <br />
                         <br />
