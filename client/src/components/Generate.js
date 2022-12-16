@@ -61,6 +61,15 @@ const Generate = (props) => {
 		}
     };
 
+	const styleChangeFour = (e) => {
+		if (!currentUser) {
+			alert("need to sign in first");
+			return <Navigate to='/signin' />;
+		} else {
+			setStyle('anime-world-generator');
+		}
+    };
+
     return (
 		<form
 			method='POST '
@@ -79,14 +88,17 @@ const Generate = (props) => {
                 <br/> */}
                 <br/>
 				<br/>
-				{style === 'fantasy-world-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeOne} > fantasy-world  </Button>} 
-				{style && style !== 'fantasy-world-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeOne} > fantasy-world  </Button>}
+				{style === 'fantasy-world-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeOne} > fantasy world  </Button>} 
+				{style && style !== 'fantasy-world-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeOne} > fantasy world  </Button>}
 				{" "}
-				{style === 'future-architecture-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeTwo} >  future-architecture  </Button> }
-				{style && style !== 'future-architecture-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeTwo} >  future-architecture  </Button> }
+				{style === 'future-architecture-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeTwo} >  future architecture  </Button> }
+				{style && style !== 'future-architecture-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeTwo} >  future architecture  </Button> }
 				{" "}
-				{style === 'stable-diffusion' && <Button variant="contained" color = 'primary' onClick={styleChangeThree} > stable-diffusion </Button> }
-				{style && style !== 'stable-diffusion' && <Button variant="outlined" color = 'primary' onClick={styleChangeThree} >stable-diffusion</Button> }
+				{style === 'stable-diffusion' && <Button variant="contained" color = 'primary' onClick={styleChangeThree} > stable diffusion </Button> }
+				{style && style !== 'stable-diffusion' && <Button variant="outlined" color = 'primary' onClick={styleChangeThree} >stable diffusion</Button> }
+				{" "}
+				{style === 'anime-world-generator' && <Button variant="contained" color = 'primary' onClick={styleChangeFour} > anime world </Button> }
+				{style && style !== 'anime-world-generator' && <Button variant="outlined" color = 'primary' onClick={styleChangeFour} >anime world </Button> }
 				<br/>
 				<br/>
                 <Button variant="contained" color = 'primary' onClick={handleChange} >Generate</Button>
