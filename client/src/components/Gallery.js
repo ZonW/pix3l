@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     },
     titleHead: {
         borderBottom: '1px solid #1e8678',
-        fontSize: 12
+        fontSize: 15
     },
     grid: {
         flexGrow: 1,
@@ -260,11 +260,14 @@ function Gallery() {
                                     component='h2'
                                     color='textSecondary'
                                 >
-                                    style: {img.style}
+
+                                    {img.text}
                                     <br></br>
-                                    text: {img.text}
-                                    <br></br>
-                                    likes: {img.likes.length}
+                                    <img
+                                    alt='likes'
+                                    src='/imgs/like.png'
+                                />
+                                    {img.likes.length}
                                 </Typography>
                             </CardContent>
                    
@@ -305,13 +308,13 @@ function Gallery() {
         if (outOfPage) {
 			return (
 				<div>
-					<h2>404 : NO More Image Found</h2>
+					<h2>You reach the end!</h2>
 				</div>
 			);
 		} else if (badRequest) {
 			return (
 				<div>
-					<h2>400 : Bad Request</h2>
+					<h2>Something wrong happend! Please Reload!</h2>
 				</div>
 			);
 		} else {
