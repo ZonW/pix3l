@@ -145,6 +145,7 @@ function Gallery() {
     const generateValue = async (value) => {
         setGenerateTerm(value.text);
         setStyle(value.style);
+        setGenerated(false);
       };
 
     const addImg1 = async (e) => {
