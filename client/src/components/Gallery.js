@@ -81,7 +81,7 @@ function Gallery() {
             try {
                 setShowNotFound(false);
                 if (currentUser) {
-                    console.log(currentUser.uid);
+                    //console.log(currentUser.uid);
                     await axios.post('//www.pix3l.art/api/newUser/' + currentUser.uid);
                 }
                 const { data } = await axios.get('//www.pix3l.art/api/gallery');
@@ -89,10 +89,10 @@ function Gallery() {
                 setLastPage(Math.ceil(data.length/50))
 
 
-                console.log(data)
+                //console.log(data)
                 const tmp = data.slice( (Number(pagenum)-1)*50, Number(pagenum)*50);
 
-                console.log(tmp)
+                //console.log(tmp)
                 setpokeData(tmp);
 
                 setLoading(false);
@@ -126,22 +126,22 @@ function Gallery() {
     }, [pagenum]);
 
     useEffect(() => {
-        console.log('generateTerm useEffect fired');
-        console.log(`in fetch generateTerm: ${generateTerm}`);
+        //console.log('generateTerm useEffect fired');
+        //console.log(`in fetch generateTerm: ${generateTerm}`);
 
         async function fetchData() {
             try {
 
-                console.log(`in fetch generateTerm: ${generateTerm}`);
-                console.log(`style: ${style}`);
+                //console.log(`in fetch generateTerm: ${generateTerm}`);
+                //console.log(`style: ${style}`);
                 if (generateTerm && style){
                     const url = "http://www.pix3l.art/api/generate?style=" + style + "&text=" + generateTerm;
                     const {data} = await axios.get(url);
-                    console.log(data);
+                    //console.log(data);
                     setGenerateData(data);
                     setGenerated(true);
-                    console.log(`in fetch generateTerm: ${generateTerm}`);
-                    console.log(`style: ${style}`);
+                    //console.log(`in fetch generateTerm: ${generateTerm}`);
+                    //console.log(`style: ${style}`);
                 }
 
             } catch (e) {
@@ -150,7 +150,7 @@ function Gallery() {
             }
         }
         if (generateTerm) {
-            console.log('generateTerm is set');
+            //console.log('generateTerm is set');
             fetchData();
         }
     }, [generateTerm, style, needGenerate]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -325,11 +325,11 @@ function Gallery() {
                         <Generate generateValue={generateValue} />
                         <br />
     
-                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'Previous'} </Link>}
                         {" "} 
-                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> Current Page: {pagenum}</Link>}
                         {" "}
-                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'>'} </Link>}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'Next'} </Link>}
         
                         <br />
                         <br />
@@ -421,11 +421,11 @@ function Gallery() {
                         <br />
 
     
-                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'<'} </Link>}
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'Previous'} </Link>}
                         {" "} 
-                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> {pagenum} </Link>}
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> Current Page: {pagenum}</Link>}
                         {" "}
-                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {">"} </Link>}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'Next'} </Link>}
         
                         <br />
                         <br />

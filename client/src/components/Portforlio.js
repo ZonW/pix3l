@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import noImage from '../img/na.jpeg';
 import Modal from "./Modal";
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button, Box } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button } from '@material-ui/core';
 import { AuthContext } from '../firebase/Auth';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 const useStyles = makeStyles({
@@ -64,7 +64,7 @@ function FindUserAllImg() {
                 userId: uid,
                 imageId: id
             })
-            if (data.length != 0) {
+            if (data.length !== 0) {
                 setfalg(!flag);
             } else {
                 console.log("check whether delete the img ")
@@ -136,8 +136,6 @@ function FindUserAllImg() {
                         {/* </Link> */}
                     </CardActionArea>
 
-                    <Button className='openModalBtn'
-                        onClick={() => { setModalOpen(true); setP(img) }}> Show detail</Button>
 
                     <Button className='deleteImg'
                         onClick={() => { deleteHanld(img.id) }}> delete</Button>
@@ -167,7 +165,7 @@ function FindUserAllImg() {
             <div>
                 <br />
                 <br />
-                {pokeData.length == 0 &&
+                {pokeData.length === 0 &&
                     <div>
                         <h2>You should generate a picture first</h2>
                         <Link to="/gallery/1">Go TO Generate</Link>

@@ -83,7 +83,7 @@ const Generate = (props) => {
 				<span>Enter something you want to generate: </span>
                 <br/>
                 <br/>
-				<TextField fullWidth id="filled-basic" label="Filled" variant="filled" name='generateTerm' onChange={(e) =>saveChange(e)}/>
+				<TextField fullWidth id="filled-basic" label="What's in your mind?" variant="filled" name='generateTerm' onChange={(e) =>saveChange(e)}/>
 				{/* <input autoComplete='off' type='text' name='generateTerm' onChange={(e) =>saveChange(e)} />
                 <br/> */}
                 <br/>

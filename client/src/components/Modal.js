@@ -1,7 +1,7 @@
 
 import React, {useContext, useState} from 'react';
 import "../App.css";
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Typography, makeStyles, Button } from '@material-ui/core';
 import noImage from '../img/na.jpeg';
 import {AuthContext} from '../firebase/Auth';
 import axios from 'axios';
@@ -31,7 +31,8 @@ const useStyles = makeStyles({
         color: '#1e8678',
         fontWeight: 'bold',
         fontSize: 12
-    }
+    },
+    
 
 });
 
@@ -128,10 +129,10 @@ function Modal({ props }) {
                 <div className="footer">
                     
 
-                    {currentUser && !whetherLike && <Button variant="outlined" color = 'secondary'
+                    {currentUser && !whetherLike && <Button id='like' variant="outlined" color = 'secondary'
                         onClick={like}> Like
                     </Button>}
-                    {currentUser && whetherLike && <Button variant="contained" color = 'secondary'
+                    {currentUser && whetherLike && <Button id='unlike' variant="contained" color = 'secondary'
                         onClick={like}> Unlike
                     </Button>}
 

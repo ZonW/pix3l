@@ -16,7 +16,7 @@ import {AuthContext} from './firebase/Auth';
 
 
 const App = () => {
-
+  console.log(useContext(AuthContext))
   return (
     <AuthProvider>
       <Router>
@@ -24,7 +24,7 @@ const App = () => {
           <header className='App-header'>
             <img src={logo} className='App-logo' alt='logo' />
             <h1 className='App-title'>
-              πx3l
+              π x 3 l
             </h1>
             <Link className='showlink' to='/gallery/1'>
               Gallery
@@ -32,17 +32,14 @@ const App = () => {
             <Link className='showlink' to='/portforlio'>
               Portforlio
             </Link>
-            <Link className='showlink' to='/signin'>
-              signin
-            </Link>
+
+            { <Link className='showlink' to='/signin'>SignIn </Link>}
 
             { <Link className='showlink' to='/signup'>
-              signup
+              SignUp
             </Link> }
-            {console.log(useContext(AuthContext))}
-            {!useContext(AuthContext) && <Link className='showlink' to='/logout'>
-              logout
-            </Link>}
+            
+            { <Link className='showlink' to='/logout'>LogOut</Link> }
             
           </header>
           <br />
