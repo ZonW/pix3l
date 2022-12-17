@@ -280,9 +280,6 @@ function Gallery() {
                     <Button className='openModalBtn'
                         onClick={() => { setModalOpen(true); setP(img) }}> Show detail
                     </Button>
-                    <Button className='openModalBtn'
-                        onClick={() => { setModalOpen(true); setP(img) }}> Like
-                    </Button>
 
                 </Card>
             </Grid>
