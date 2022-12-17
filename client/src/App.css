@@ -69,12 +69,12 @@ col-md-4 {
 	max-width: 60%;
 }
 .showlink {
-	padding: 0.4rem 0.8rem;
-	background-color: white;
-	border-radius: 3px;
+	padding: 0.4rem 0.9rem;
+	background-color: rgb(255, 255, 255);
+	border-radius: 5px;
 	color: #cb1e1e;
 	text-decoration: none !important;
-	margin: 5px;
+	margin: 20px;
 }
 
 .showlink:hover {
@@ -141,7 +141,7 @@ dd {
 .modalBackground {
     z-index: 1;
     top: 0;
-    opacity: 0.95;
+    opacity: 1;
     width: 100vw;
     height: 100vh;
     background-color: rgba(200, 200, 200);
@@ -156,7 +156,7 @@ dd {
     opacity: 1;
     /* margin-top:100px; */
     width: 600px;
-    height: 600px;
+    height: 700px;
     border-radius: 12px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -224,6 +224,13 @@ dd {
     background-color: rgb(98, 0, 0);
   }
 
+  #deleteImg {
+    padding: 2.5px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    background-color: rgb(152, 2, 2);
+  }
+  
   .showlink {
     font-size: 20px;
     font-weight: bold;

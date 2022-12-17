@@ -55,7 +55,7 @@ function Gallery() {
     const [ outOfPage, setOutOfPage ] = useState(false);
     const [ badRequest, setBadRequest ] = useState(false);
     const [ generated, setGenerated] = useState(false);
-    const [ showNotFound, setShowNotFound] = useState(false);
+    const [ genError, setGenError] = useState(false);
     const [ added1, setAdded1] = useState(false);
     const [ added2, setAdded2] = useState(false);
     const [ added3, setAdded3] = useState(false);
@@ -79,18 +79,17 @@ function Gallery() {
         async function fetchData() {
 
             try {
-                setShowNotFound(false);
                 if (currentUser) {
                     //console.log(currentUser.uid);
                     await axios.post('//www.pix3l.art/api/newUser/' + currentUser.uid);
                 }
                 const { data } = await axios.get('//www.pix3l.art/api/gallery');
 
-                setLastPage(Math.ceil(data.length/50))
+                setLastPage(Math.ceil(data.length/48))
 
 
                 //console.log(data)
-                const tmp = data.slice( (Number(pagenum)-1)*50, Number(pagenum)*50);
+                const tmp = data.slice( (Number(pagenum)-1)*48, Number(pagenum)*48);
 
                 //console.log(tmp)
                 setpokeData(tmp);
@@ -114,7 +113,6 @@ function Gallery() {
 					setNext(true);
                 }
             } catch (e) {
-                setShowNotFound(true);
                 setLoading(false);
                 console.log(e);
             }
@@ -126,22 +124,25 @@ function Gallery() {
     }, [pagenum]);
 
     useEffect(() => {
-        //console.log('generateTerm useEffect fired');
-        //console.log(`in fetch generateTerm: ${generateTerm}`);
+
 
         async function fetchData() {
             try {
 
-                //console.log(`in fetch generateTerm: ${generateTerm}`);
-                //console.log(`style: ${style}`);
+              
                 if (generateTerm && style){
                     const url = "http://www.pix3l.art/api/generate?style=" + style + "&text=" + generateTerm;
                     const {data} = await axios.get(url);
-                    //console.log(data);
-                    setGenerateData(data);
-                    setGenerated(true);
-                    //console.log(`in fetch generateTerm: ${generateTerm}`);
-                    //console.log(`style: ${style}`);
+                    console.log(data);
+                    if(!data.error){
+
+                        setGenerateData(data);
+                        setGenerated(true);
+                    }
+                    else if(data.error === "Time out"){
+                        setGenError(true)
+                    }
+                  
                 }
 
             } catch (e) {
@@ -292,7 +293,7 @@ function Gallery() {
     pokeData.map(img => {
         return buildCard(img);
     });
-
+    
     if (pagenum === undefined){
         return <Navigate to='/gallery/1' />;
     }
@@ -324,6 +325,7 @@ function Gallery() {
                     <div>
                         <Generate generateValue={generateValue} />
                         <br />
+                        <br></br>
     
                         {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'Previous'} </Link>}
                         {" "} 
@@ -332,22 +334,36 @@ function Gallery() {
                         {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'Next'} </Link>}
         
                         <br />
+                        <br></br>
                         <br />
                         {modalOpen && <Modal props={[setModalOpen, p]} />}
                         <Grid container className={classes.grid} spacing={5}>
                             {card}
                         </Grid>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'Previous'} </Link>}
+                        {" "} 
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> Current Page: {pagenum}</Link>}
+                        {" "}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'Next'} </Link>}
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
                     </div>
                 );
 
             } else {
+                if(genError){
+                    return <h2>Something is wrong ...Try again.</h2>
+                }
                 return (
                     <div>
                         {!generated  && <h2>Generating ...</h2>}
                         {!generated  && <LinearProgress />}
-                        {generated  && <h2>Generated !!!</h2>}
-                        <br />
-                        <br />
+                        {generated && <h2>Generated !!!</h2>}
                         <br />
                         <br />
                         <br />
@@ -433,6 +449,18 @@ function Gallery() {
                         <Grid container className={classes.grid} spacing={5}>
                             {card}
                         </Grid>
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        {previous  && <Link className="showlink" to={`/gallery/${Number(pagenum) - 1}`}> {'Previous'} </Link>}
+                        {" "} 
+                        {<Link className="showlink" to={`/gallery/${Number(pagenum)}`}> Current Page: {pagenum}</Link>}
+                        {" "}
+                        {next  && <Link className="showlink" to={`/gallery/${Number(pagenum) + 1}`}> {'Next'} </Link>}
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
                     </div>
                 );
             }

@@ -80,11 +80,10 @@ function FindUserAllImg() {
         async function fetchData() {
             try {
                 setShowNotFound(false);
-                // const { data} = await axios.get('/api/userImage/XXYYUUOO');
-                // const { data } = await axios.get('/api/userImage/XXYYUUOO');
+    
                 const { data } = await axios.get('//www.pix3l.art/api/getUser/' + currentUser.uid);
                 setUid(currentUser.uid)
-                // http://www.pix3l.art/api/getUser/qwerqwer
+        
                 console.log(data);
                 let images = data.images
                 setpokeData(images);
@@ -105,7 +104,6 @@ function FindUserAllImg() {
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={img.id}>
                 <Card className={classes.card} variant='outlined' >
                     <CardActionArea>
-                        {/* <Link to={`/pokemon/${pokemon.id}`}> */}
                         <CardMedia
                             className={classes.media}
                             component='img'
@@ -121,7 +119,7 @@ function FindUserAllImg() {
                                 component='h2'
                                 color='textSecondary'
                             >
-                                {/* {pokemon.species.name} */}
+
                                 Style: {img.style}
                                 <br></br>
                                 Text: {img.text}
@@ -133,13 +131,11 @@ function FindUserAllImg() {
                                  {img.likes.length}
                             </Typography>
                         </CardContent>
-                        {/* </Link> */}
+                
                     </CardActionArea>
 
-
-                    <Button className='deleteImg'
+                    <Button id='deleteImg'
                         onClick={() => { deleteHanld(img.id) }}> delete</Button>
-
                 </Card>
             </Grid>
         );
@@ -160,7 +156,6 @@ function FindUserAllImg() {
         );
     }
     else {
-        // console.log(pokeData);
         return (
             <div>
                 <br />
