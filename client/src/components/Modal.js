@@ -1,8 +1,10 @@
 
-import React from "react";
+import React, {useContext, useState} from 'react';
 import "../App.css";
 import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography, makeStyles, Button } from '@material-ui/core';
 import noImage from '../img/na.jpeg';
+import {AuthContext} from '../firebase/Auth';
+import axios from 'axios';
 
 const useStyles = makeStyles({
     card: {
@@ -37,6 +39,48 @@ function Modal({ props }) {
     const classes = useStyles();
     console.log(props);
     const img = props[1];
+    
+
+    const {currentUser} = useContext(AuthContext);
+    const [ likeNum, setLikeNum ] = useState(img.likes.length);
+    let tmp;
+    if (currentUser) {
+        if (img.likes.indexOf(currentUser.uid) === -1){
+            tmp = false;
+        } else {
+            tmp = true;
+        }
+    } else {
+        tmp = false;
+    }
+    
+    const [ whetherLike, setWhetherLike ] = useState(tmp);
+    
+    const like = async (e) => {
+        e.preventDefault();
+        try {
+            await axios({
+                method: 'post',
+                url: '//www.pix3l.art/api/likeImage',
+                data:  {
+                    userId: img.firebaseId, 
+                    likerId: currentUser.uid, 
+                    imageId: img.id
+                }
+              });
+            if (whetherLike){
+                setLikeNum(likeNum - 1);
+                setWhetherLike(false);
+            } else {
+                setLikeNum(likeNum + 1);
+                setWhetherLike(true);
+            }
+
+        } catch (err) {
+            console.log(err);
+        }	
+    };
+
     return (
         <div className="modalBackground">
             <div className="modalContainer">
@@ -77,11 +121,21 @@ function Modal({ props }) {
                                     alt='likes'
                                     src='/imgs/like.png'
                                 />
-                                 {img.likes.length}
+                                 {likeNum}
                         </CardActionArea>
                     </Card>
                 </div>
                 <div className="footer">
+                    
+
+                    {currentUser && !whetherLike && <Button variant="outlined" color = 'secondary'
+                        onClick={like}> Like
+                    </Button>}
+                    {currentUser && whetherLike && <Button variant="contained" color = 'secondary'
+                        onClick={like}> Unlike
+                    </Button>}
+
+                    <br></br>
                     <button
                         onClick={() => {
                             props[0](false);
@@ -90,6 +144,8 @@ function Modal({ props }) {
                     >
                         Close
                     </button>
+
+
                 </div>
             </div>
         </div>
