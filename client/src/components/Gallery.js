@@ -46,7 +46,7 @@ function Gallery() {
     const classes = useStyles();
     const [ loading, setLoading] = useState(true);
     const [ generateData, setGenerateData] = useState(null);
-    const [ pokeData, setpokeData] = useState(undefined);
+    const [ returnData, setReturnData] = useState(undefined);
     const [ generateTerm, setGenerateTerm] = useState('');
     const [ needGenerate, setNeedGenerate] = useState(false);
     const [ style, setStyle] = useState('');
@@ -93,26 +93,28 @@ function Gallery() {
                 const tmp = data.slice( (Number(pagenum)-1)*50, Number(pagenum)*50);
 
                 console.log(tmp)
-                setpokeData(tmp);
+                setReturnData(tmp);
 
                 setLoading(false);
                 setOutOfPage(false);
                 setBadRequest(false);
+
+                setPrevious(true);
+				setNext(true);
+
                 if (Number(pagenum) === firstPage){
-                    
                     setPrevious(false);
-					setNext(true);
-                } else if (Number(pagenum) === lastPage){
-                    setPrevious(true);
+                } 
+                if (Number(pagenum) === lastPage){
 					setNext(false);
-                } else if (Number(pagenum) > lastPage){
+                } 
+                if (Number(pagenum) > lastPage){
                     setOutOfPage(true);
-                } else if (Number(pagenum) < firstPage){
+                } 
+                if (Number(pagenum) < firstPage){
                     setBadRequest(true);
-                } else {
-                    setPrevious(true);
-					setNext(true);
                 }
+
             } catch (e) {
                 setShowNotFound(true);
                 setLoading(false);
@@ -288,8 +290,8 @@ function Gallery() {
 
 
     card =
-    pokeData &&
-    pokeData.map(img => {
+    returnData &&
+    returnData.map(img => {
         return buildCard(img);
     });
 
