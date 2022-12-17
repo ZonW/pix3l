@@ -98,21 +98,23 @@ function Gallery() {
                 setLoading(false);
                 setOutOfPage(false);
                 setBadRequest(false);
+
+                setPrevious(true);
+				setNext(true);
+
                 if (Number(pagenum) === firstPage){
-                    
                     setPrevious(false);
-					setNext(true);
-                } else if (Number(pagenum) === lastPage){
-                    setPrevious(true);
+                } 
+                if (Number(pagenum) === lastPage){
 					setNext(false);
-                } else if (Number(pagenum) > lastPage){
+                } 
+                if (Number(pagenum) > lastPage){
                     setOutOfPage(true);
-                } else if (Number(pagenum) < firstPage){
+                } 
+                if (Number(pagenum) < firstPage){
                     setBadRequest(true);
-                } else {
-                    setPrevious(true);
-					setNext(true);
                 }
+
             } catch (e) {
                 setShowNotFound(true);
                 setLoading(false);
